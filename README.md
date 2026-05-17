@@ -38,6 +38,7 @@ uv run python -m pjepa_sim.cli.video_representation_benchmark
 uv run python -m pjepa_sim.verification.video_representation_claims
 uv run python -m pjepa_sim.verification.kth_sample_video_claims
 uv run python -m pjepa_sim.verification.manifest_video_protocol_claims
+uv run python -m pjepa_sim.verification.robot_manifest_protocol_claims
 uv run python -m pjepa_sim.cli.formal_contract_benchmark
 uv run python -m pjepa_sim.verification.formal_contract_claims
 uv run python -m pjepa_sim.cli.online_cover_benchmark
@@ -48,6 +49,7 @@ uv run python -m pjepa_sim.cli.gluing_ablation_benchmark
 uv run python -m pjepa_sim.verification.gluing_claims
 uv run python -m pjepa_sim.cli.skill_composition_benchmark
 uv run python -m pjepa_sim.verification.composition_claims
+uv run python -m pjepa_sim.verification.evidence_claims
 ```
 
 The KTH command downloads six official sample AVI files into `simulation/data/kth_samples/`. That directory is gitignored, but the KTH verifier is part of the local audit; `verify_all` expects those files to be present.
@@ -57,6 +59,12 @@ Prepare a full KTH-style real-video manifest when the complete dataset is availa
 ```bash
 uv run python -m pjepa_sim.cli.prepare_video_manifest kth --video-root path/to/kth-videos --output output/kth_full_manifest.csv
 uv run python -m pjepa_sim.cli.manifest_video_benchmark --manifest output/kth_full_manifest.csv --video-root path/to/kth-videos --validate-only --require-action-metadata
+```
+
+Validate a future robot/action dataset manifest before making robot-policy claims:
+
+```bash
+uv run python -m pjepa_sim.cli.validate_robot_manifest --manifest path/to/robot_manifest.csv --data-root path/to/data --require-language --require-robot-metadata
 ```
 
 Optional Meta-World runs require `gymnasium`, `metaworld`, and MuJoCo:
@@ -69,7 +77,7 @@ uv run python -m pjepa_sim.verification.raw_record_external_claims
 Rebuild the paper from the repository root:
 
 ```bash
-./paper/scripts/build-paper.sh
+./scripts/build-paper.sh
 ```
 
 ## Documentation

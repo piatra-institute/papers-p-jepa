@@ -39,6 +39,7 @@ simulation/
     perception/           rendered-pixel continuous-control stress test
     representation/       action-grounded representation benchmark
     real_video/           KTH real-video smoke test and manifest protocol
+    robot/                robot/action manifest protocol
       clustering.py       shared deterministic clustering helpers
     verification/         executable claim checks
     cli/                  command implementations
@@ -108,6 +109,10 @@ The same module also exposes a neural sample-efficiency sweep. It varies the num
 `simulation/pjepa_sim/real_video/kth_samples.py` is the load-bearing real-video smoke test. It downloads the six official sample AVI files from the KTH action database, decodes them with `ffmpeg`, builds temporal windows, and compares static appearance, passive next-frame, and temporal-motion descriptors. It is part of the default local audit once the gitignored sample videos have been downloaded. Its current result is diagnostic rather than positive for P-JEPA: the sample split is appearance dominated.
 
 `simulation/pjepa_sim/real_video/manifest_benchmark.py` is the next-step protocol for full real-video datasets. It reads CSV or JSON manifests with at least `path`, `label`, and `split`; validates file existence, class coverage, same-file leakage, and train/test group disjointness; and can require an `action` column before a P-JEPA action-grounding claim is allowed. `simulation/pjepa_sim/real_video/manifest_builders.py` starts the dataset-preparation layer with a KTH filename parser that emits subject-grouped records and action labels. This is the path for Something-Something, Ego4D-derived clips, DROID video/action data, or a full KTH-style split. The protocol verifier is part of the local audit, but it does not claim a new performance result until a full manifest is supplied and run.
+
+`simulation/pjepa_sim/robot/manifest_protocol.py` is the corresponding guardrail for robot-policy evidence. A future robot-policy claim must point to observation data, action trajectories, task labels, train/test group ids, success labels, and unsafe-failure labels. Optional checks require language metadata and robot/embodiment metadata. This keeps a future DROID, RoboMimic, LIBERO, or Open X-Embodiment run separate from the current toy and scripted-control evidence.
+
+`simulation/pjepa_sim/verification/evidence.py` is the claim-boundary layer. It classifies each verifier by evidence level and records what the result supports and does not support. `evidence_claims.py` writes `output/EVIDENCE_MATRIX.md` and checks that protocol-only infrastructure, diagnostic negative evidence, and local surrogates cannot be counted as broad performance evidence.
 
 `simulation/pjepa_sim/representation/online.py` removes the offline clustering pass. Contexts arrive in an unlabeled stream, and the learner creates or updates a local model when the next action-consequence fingerprint is outside the current cover. This tests incremental cover construction, still from engineered action-test summaries rather than sensory encoders.
 

@@ -2,7 +2,7 @@
 
 This project should make narrow, executable claims. It should not claim that P-JEPA solves robotics, learns perception, scales to foundation models, or establishes cohomology as independently superior to all active-learning objectives.
 
-For an auditable local summary, run `uv run python -m pjepa_sim.cli.kth_sample_video_benchmark --download` once from `simulation/`, then run `uv run python -m pjepa_sim.cli.verify_all`. It writes `output/CLAIMS_SUMMARY.md`, which lists every local claim, its verifier JSON, observed value, threshold, and limitation. The KTH sample real-video check is included in this command; optional Meta-World checks are excluded because they require external simulator dependencies.
+For an auditable local summary, run `uv run python -m pjepa_sim.cli.kth_sample_video_benchmark --download` once from `simulation/`, then run `uv run python -m pjepa_sim.cli.verify_all`. It writes `output/CLAIMS_SUMMARY.md`, which lists every local claim, its verifier JSON, observed value, threshold, and limitation. It also writes `output/EVIDENCE_MATRIX.md`, which separates demonstrated local mechanisms, learned structured-sensor results, synthetic scaling, local surrogates, diagnostic negatives, and protocol-only infrastructure. The KTH sample real-video check is included in this command; optional Meta-World checks are excluded because they require external simulator dependencies.
 
 ## Main Demonstrated Claim
 
@@ -212,6 +212,40 @@ Verifier:
 cd simulation
 uv run python -m pjepa_sim.cli.kth_sample_video_benchmark --download
 uv run python -m pjepa_sim.verification.kth_sample_video_claims
+uv run python -m pjepa_sim.verification.manifest_video_protocol_claims
+```
+
+## Robot-Policy Protocol Evidence
+
+`simulation/pjepa_sim/robot/manifest_protocol.py` is not a robot-learning result. It is a claim guard for the next stage. A future robot-policy benchmark must supply episode observations, action trajectories, task labels, split labels, group ids for leakage control, success metrics, and unsafe-failure metrics. Optional checks require language metadata and robot/embodiment metadata.
+
+Current executable checks:
+
+- A complete robot-policy manifest is accepted.
+- A manifest without action trajectories is rejected.
+- A manifest without task-success metrics is rejected.
+- A manifest without unsafe-failure metrics is rejected by default.
+- Non-safety runs can explicitly disable the unsafe-metric requirement.
+- Group leakage between train and test is rejected.
+- Task-incomplete train/test splits are rejected.
+- Missing observation files are rejected.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.robot_manifest_protocol_claims
+```
+
+## Evidence-Level Guard
+
+`simulation/pjepa_sim/verification/evidence.py` classifies every local verifier by evidence level. `simulation/pjepa_sim/verification/evidence_claims.py` checks that every local verifier has a classification, that protocol checks are not counted as performance evidence, that the KTH sample remains diagnostic negative evidence, that the video surrogate is not treated as V-JEPA evidence, and that the robot manifest protocol is not treated as a robot-policy result.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.evidence_claims
 ```
 
 ## Formal Contract-Interface Evidence
@@ -343,7 +377,7 @@ The strongest current implementation result is the raw-record run. It starts fro
 
 ## What Is Not Demonstrated
 
-The current implementation does not demonstrate learning a robot controller, tactile representation learning, language grounding, online regime discovery from uncontrolled logs, multi-task robot transfer, neural sheaf learning, a uniquely sheaf-theoretic advantage isolated from intervention, viability, and value-of-information effects, or scalability to internet video or foundation-model pretraining. The neural benchmarks learn from low-dimensional structured sensor features, probe-evidence features, and test identities, not tactile streams or end-to-end robot trajectories; their sample-efficiency, active-probing, boundary-condition, and seed-sweep results are toy results, not general data-efficiency or robotics claims. The pixel continuous-control benchmark is the first local move toward learned perception and harder control, but it still uses tiny rendered images, a small MLP, finite controller templates, and simulated 2D dynamics. It is not MuJoCo-scale robot learning. The video-representation benchmark is a local surrogate for passive JEPA-style prediction; it is not a result against V-JEPA, V-JEPA 2, or any video foundation model. The formal contract-interface benchmark does not run Kona, Aleph, Lean, or any external theorem prover; it is a finite local checker and export protocol for future proof/constraint backends. The active-probing boundary benchmark is useful precisely because it shows when the claim weakens: if sensors already identify the regime, probing has no marginal value; if probes are weak, the learned active-probing gain nearly disappears. The seed sweep supports the no-probe and unsafe-failure claims across tested deterministic seeds, but it also shows a nuance: value-aware probing is only slightly better than entropy probing on average and can lose to entropy on an individual seed. The synthetic scaling benchmark is a controlled regime-count sweep over engineered action-consequence fingerprints, not evidence of high-dimensional neural scaling. The gluing ablation learns linear restriction maps over engineered local section vectors; it is not an end-to-end neural sheaf. The representation, online cover-construction, and composition benchmarks use engineered action/probe fingerprints and skill tables rather than learned sensory encoders or learned options.
+The current implementation does not demonstrate learning a robot controller, tactile representation learning, language grounding, online regime discovery from uncontrolled logs, multi-task robot transfer, neural sheaf learning, a uniquely sheaf-theoretic advantage isolated from intervention, viability, and value-of-information effects, or scalability to internet video or foundation-model pretraining. The neural benchmarks learn from low-dimensional structured sensor features, probe-evidence features, and test identities, not tactile streams or end-to-end robot trajectories; their sample-efficiency, active-probing, boundary-condition, and seed-sweep results are toy results, not general data-efficiency or robotics claims. The pixel continuous-control benchmark is the first local move toward learned perception and harder control, but it still uses tiny rendered images, a small MLP, finite controller templates, and simulated 2D dynamics. It is not MuJoCo-scale robot learning. The video-representation benchmark is a local surrogate for passive JEPA-style prediction; it is not a result against V-JEPA, V-JEPA 2, or any video foundation model. The KTH sample check is real video but diagnostic negative evidence, not a P-JEPA video win. The manifest protocols and evidence-level guard are infrastructure, not performance evidence. The formal contract-interface benchmark does not run Kona, Aleph, Lean, or any external theorem prover; it is a finite local checker and export protocol for future proof/constraint backends. The active-probing boundary benchmark is useful precisely because it shows when the claim weakens: if sensors already identify the regime, probing has no marginal value; if probes are weak, the learned active-probing gain nearly disappears. The seed sweep supports the no-probe and unsafe-failure claims across tested deterministic seeds, but it also shows a nuance: value-aware probing is only slightly better than entropy probing on average and can lose to entropy on an individual seed. The synthetic scaling benchmark is a controlled regime-count sweep over engineered action-consequence fingerprints, not evidence of high-dimensional neural scaling. The gluing ablation learns linear restriction maps over engineered local section vectors; it is not an end-to-end neural sheaf. The representation, online cover-construction, and composition benchmarks use engineered action/probe fingerprints and skill tables rather than learned sensory encoders or learned options.
 
 These limits are not defects to hide. They define the correct scientific status: formal proposal plus controlled executable demonstrations.
 

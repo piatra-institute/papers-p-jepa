@@ -2,6 +2,8 @@
 
 This document turns the paper's current limits into executable milestones. The current repository supports a narrow P-JEPA claim under controlled hidden-regime, learned-probe, rendered-pixel, real-video smoke-test, and protocol-check settings. It does not yet prove that P-JEPA is a scalable JEPA replacement, a robot policy learner, or a video foundation model.
 
+The generated `simulation/output/EVIDENCE_MATRIX.md` is the current claim boundary. It should change only after a new benchmark supplies performance evidence rather than protocol-only infrastructure.
+
 ## Milestone 1: Full Real-Video Benchmark
 
 Question: does the action-grounding argument survive a real video dataset with leakage-aware train/test splits?
@@ -48,6 +50,15 @@ Candidate benchmarks:
 - RoboMimic for offline imitation.
 - Meta-World or ManiSkill for controlled continuous-control comparisons.
 - DROID or Open X-Embodiment for real robot-video/action data.
+
+Before a robot benchmark is treated as evidence, validate its manifest:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.cli.validate_robot_manifest --manifest path/to/robot_manifest.csv --data-root path/to/data --require-language --require-robot-metadata
+```
+
+The manifest must expose observation data, action trajectories, task labels, train/test groups, success metrics, and unsafe-failure metrics. Without these fields the result may still be a useful dataset experiment, but it cannot support the paper's robot-policy or safety claims.
 
 Required baselines:
 

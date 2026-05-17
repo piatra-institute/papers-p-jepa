@@ -65,6 +65,12 @@ This document explains how the simulation code is organized and how to extend it
 - `simulation/pjepa_sim/verification/kth_sample_video_claims.py`: load-bearing verifier for the KTH sample-video result. It checks that the benchmark uses real video files and records the current negative result that static/passive descriptors beat temporal motion on this appearance-dominated sample split.
 - `simulation/pjepa_sim/verification/manifest_video_protocol_claims.py`: verifier for the full-video protocol. It checks that the manifest runner rejects class-incomplete splits, same-video train/test leakage, missing group metadata, and missing action metadata when action-grounding claims are requested. It also checks that the KTH manifest builder parses sample filenames while refusing to treat the six-file sample as a full split.
 
+### Robot Policy Protocol
+
+- `simulation/pjepa_sim/robot/manifest_protocol.py`: robot/action manifest protocol for future policy-learning evidence. It validates episode observations, actions, tasks, train/test groups, success metrics, unsafe-failure metrics, language metadata, and robot metadata.
+- `simulation/pjepa_sim/cli/validate_robot_manifest.py`: CLI implementation for validating robot/action manifests before claiming robot-policy evidence.
+- `simulation/pjepa_sim/verification/robot_manifest_protocol_claims.py`: verifier for the robot/action protocol. It checks that complete manifests are accepted and that missing actions, missing success labels, missing unsafe labels, group leakage, task-incomplete splits, and missing observation files are rejected.
+
 ### Verification
 
 - `simulation/pjepa_sim/verification/reporting.py`: shared helpers for margin-based verifier reports.
@@ -81,6 +87,9 @@ This document explains how the simulation code is organized and how to extend it
 - `simulation/pjepa_sim/verification/video_representation_claims.py`: video-surrogate checks for passive next-frame prediction versus action-conditioned predicted-test representations.
 - `simulation/pjepa_sim/verification/kth_sample_video_claims.py`: load-bearing real-video smoke-test checks over downloaded KTH sample AVI files.
 - `simulation/pjepa_sim/verification/manifest_video_protocol_claims.py`: leakage and metadata protocol checks for future full real-video benchmarks.
+- `simulation/pjepa_sim/verification/robot_manifest_protocol_claims.py`: robot/action manifest protocol checks for future learned policy benchmarks.
+- `simulation/pjepa_sim/verification/evidence.py`: evidence-level registry classifying each verifier as mechanism evidence, surrogate evidence, diagnostic negative, protocol-only, or claim-boundary evidence.
+- `simulation/pjepa_sim/verification/evidence_claims.py`: evidence-level guard that checks every local verifier has an evidence classification and that protocols/diagnostics do not become broader performance claims.
 - `simulation/pjepa_sim/verification/formal_contract_claims.py`: verification-interface checks for finite safety contracts and counterexample reporting.
 - `simulation/pjepa_sim/verification/online_claims.py`: online cover-construction checks for incremental action-consequence regime discovery.
 - `simulation/pjepa_sim/verification/scaling_claims.py`: synthetic scaling checks for action-grounded representation as hidden regime count increases.

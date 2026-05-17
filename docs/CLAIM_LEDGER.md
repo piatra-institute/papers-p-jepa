@@ -8,7 +8,7 @@ uv run python -m pjepa_sim.cli.kth_sample_video_benchmark --download
 uv run python -m pjepa_sim.cli.verify_all
 ```
 
-The generated summary is intentionally not committed. It records every local verifier claim, observed value, threshold, verifier JSON, and limitation.
+The generated summary is intentionally not committed. It records every local verifier claim, observed value, threshold, verifier JSON, and limitation. The audit also generates `simulation/output/EVIDENCE_MATRIX.md`, which classifies each evidence group and records broad claims that are not established by the current repository.
 
 ## Local Claims
 
@@ -26,11 +26,13 @@ The local verification audit covers these evidence groups:
 - Video representation surrogate: a passive JEPA-like next-frame predictor can predict frames while failing to recover action regimes under visual shift, whereas action-conditioned predicted-test representation recovers the action regimes.
 - KTH sample real video: the load-bearing real-video smoke test uses downloaded official KTH sample AVI files and currently gives a diagnostic negative result for P-JEPA video advantage because static appearance and passive next-frame descriptors beat temporal motion on the sample split.
 - Manifest real-video protocol: the audit checks that the next full-video benchmark runner rejects class-incomplete splits, same-file train/test leakage, missing group metadata, and missing action metadata when a P-JEPA action-grounding claim is requested. It also checks that the KTH manifest builder parses official-style filenames while rejecting the six-file sample set as a full benchmark.
+- Robot manifest protocol: the audit checks that future robot-policy datasets expose observations, actions, task labels, train/test groups, success labels, unsafe-failure labels, and no group leakage before any learned robot-policy claim is made.
 - Formal contract interface: finite safety, branch-safety, obstruction, score, and probe-budget contracts are exported for verification backends and checked locally without claiming Kona or Aleph execution.
 - Online cover construction: the action-regime cover can be built incrementally from engineered fingerprints.
 - Synthetic regime scaling: engineered action-consequence grouping remains coherent as synthetic hidden-regime count increases.
 - Restriction-map gluing: learned linear restriction maps align incompatible local action-coordinate frames.
 - Skill composition: action-grounded representations select the intended two-step precondition/postcondition chains.
+- Evidence-level guard: every local verifier has an evidence classification, and protocol checks, diagnostic negatives, and local surrogates are not promoted into broader claims.
 
 ## Outside The Local Audit
 
@@ -38,4 +40,4 @@ Optional Meta-World adapter checks are not part of `verify_all` because they req
 
 ## Standing Limits
 
-The local audit does not prove robot competence, tactile-stream representation learning, internet-scale video representation learning, or end-to-end neural sheaf learning. The pixel continuous-control benchmark is only a small rendered-image stress test; it does not establish real-world vision or robot control. The video-representation benchmark is a local surrogate for passive JEPA-style prediction, not a result against V-JEPA, V-JEPA 2, or any video foundation model. The KTH sample check is load-bearing but small; it proves the audit can process real video and records the current negative sample result, not full action-video superiority. The manifest protocol check is infrastructure, not performance evidence. The formal contract interface is a local finite-state checker and export protocol, not a benchmark result for proprietary Kona or Aleph systems. The audit proves that the repository's controlled executable claims still pass under their stated assumptions.
+The local audit does not prove robot competence, tactile-stream representation learning, internet-scale video representation learning, or end-to-end neural sheaf learning. The pixel continuous-control benchmark is only a small rendered-image stress test; it does not establish real-world vision or robot control. The video-representation benchmark is a local surrogate for passive JEPA-style prediction, not a result against V-JEPA, V-JEPA 2, or any video foundation model. The KTH sample check is load-bearing but small; it proves the audit can process real video and records the current negative sample result, not full action-video superiority. The video and robot manifest protocol checks are infrastructure, not performance evidence. The evidence-level guard is also infrastructure: it protects the claim boundary rather than adding a new performance result. The formal contract interface is a local finite-state checker and export protocol, not a benchmark result for proprietary Kona or Aleph systems. The audit proves that the repository's controlled executable claims still pass under their stated assumptions.

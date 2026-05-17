@@ -31,11 +31,13 @@ uv run python -m pjepa_sim.verification.pixel_continuous_claims
 uv run python -m pjepa_sim.verification.video_representation_claims
 uv run python -m pjepa_sim.verification.kth_sample_video_claims
 uv run python -m pjepa_sim.verification.manifest_video_protocol_claims
+uv run python -m pjepa_sim.verification.robot_manifest_protocol_claims
 uv run python -m pjepa_sim.verification.formal_contract_claims
 uv run python -m pjepa_sim.verification.online_claims
 uv run python -m pjepa_sim.verification.scaling_claims
 uv run python -m pjepa_sim.verification.gluing_claims
 uv run python -m pjepa_sim.verification.composition_claims
+uv run python -m pjepa_sim.verification.evidence_claims
 uv run python -m pjepa_sim.verification.external_claims
 uv run python -m pjepa_sim.verification.learned_external_claims
 uv run python -m pjepa_sim.verification.unsupervised_external_claims
@@ -48,6 +50,12 @@ Full-video manifest preparation:
 ```bash
 uv run python -m pjepa_sim.cli.prepare_video_manifest kth --video-root path/to/kth-videos --output output/kth_full_manifest.csv
 uv run python -m pjepa_sim.cli.manifest_video_benchmark --manifest output/kth_full_manifest.csv --video-root path/to/kth-videos --validate-only --require-action-metadata
+```
+
+Robot/action manifest validation:
+
+```bash
+uv run python -m pjepa_sim.cli.validate_robot_manifest --manifest path/to/robot_manifest.csv --data-root path/to/data --require-language --require-robot-metadata
 ```
 
 Optional external benchmark regeneration:
@@ -63,7 +71,7 @@ uv run --with gymnasium --with metaworld python -m pjepa_sim.cli.external_benchm
 From the repository root:
 
 ```bash
-./paper/scripts/build-paper.sh
+./scripts/build-paper.sh
 ```
 
 ## Code Organization
@@ -73,6 +81,7 @@ From the repository root:
 - `simulation/pjepa_sim/representation/`: action-grounded representation, neural intervention encoder, neural active probing, online cover-construction, scaling, gluing-ablation, and skill-composition benchmarks.
 - `simulation/pjepa_sim/perception/`: rendered-image and local continuous-control validity tests.
 - `simulation/pjepa_sim/real_video/`: load-bearing KTH sample real-video smoke test and manifest-based full-video benchmark protocol using downloaded AVI files.
+- `simulation/pjepa_sim/robot/`: robot/action manifest protocol for future robot-policy-learning evidence.
 - `simulation/pjepa_sim/formal/`: finite contract export for external verification adapters.
 - `simulation/pjepa_sim/external/`: Meta-World hidden-regime adapter and learned local-section estimators.
 - `simulation/pjepa_sim/verification/`: executable claim checks and shared verifier reporting helpers.

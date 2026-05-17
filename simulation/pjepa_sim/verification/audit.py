@@ -92,6 +92,12 @@ LOCAL_VERIFIERS: tuple[VerifierSpec, ...] = (
         limitation="Protocol verifier for leakage-aware real-video manifests; it does not report a new dataset performance result.",
     ),
     VerifierSpec(
+        label="Robot manifest protocol",
+        module="pjepa_sim.verification.robot_manifest_protocol_claims",
+        report_path=OUTPUT_DIR / "robot_manifest_protocol_verification.json",
+        limitation="Protocol verifier for future robot-policy manifests; it does not report learned robot policy performance.",
+    ),
+    VerifierSpec(
         label="Formal contract interface",
         module="pjepa_sim.verification.formal_contract_claims",
         report_path=OUTPUT_DIR / "formal_contract_verification.json",
@@ -120,6 +126,12 @@ LOCAL_VERIFIERS: tuple[VerifierSpec, ...] = (
         module="pjepa_sim.verification.composition_claims",
         report_path=OUTPUT_DIR / "skill_composition_verification.json",
         limitation="Minimal precondition/postcondition skill-table benchmark, not learned options.",
+    ),
+    VerifierSpec(
+        label="Evidence-level guard",
+        module="pjepa_sim.verification.evidence_claims",
+        report_path=OUTPUT_DIR / "evidence_verification.json",
+        limitation="Claim-boundary verifier; classifies evidence levels and prevents broad overclaims.",
     ),
 )
 

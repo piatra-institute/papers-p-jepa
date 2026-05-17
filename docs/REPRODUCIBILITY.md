@@ -31,6 +31,8 @@ Generated files:
 
 - `output/claims_summary.json`
 - `output/CLAIMS_SUMMARY.md`
+- `output/evidence_matrix.json`
+- `output/EVIDENCE_MATRIX.md`
 
 This command runs all local verifiers listed in `pjepa_sim.verification.audit.LOCAL_VERIFIERS`, including the KTH sample real-video smoke test. It deliberately excludes optional Meta-World checks because those require external simulator dependencies.
 
@@ -289,6 +291,31 @@ The manifest must contain `path`, `label`, and `split` columns. For a serious fu
 
 The KTH builder assumes the usual filename pattern, such as `person15_walking_d1_uncomp.avi`, and defaults to subjects `01-16` for train and `17-25` for test. The six-file KTH sample set intentionally fails this protocol because it contains only one subject; it remains a smoke test, not a full benchmark.
 
+## Robot Manifest Protocol
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.cli.validate_robot_manifest --manifest path/to/robot_manifest.csv --data-root path/to/data --require-language --require-robot-metadata
+uv run python -m pjepa_sim.verification.robot_manifest_protocol_claims
+```
+
+The robot manifest must contain `episode_id`, `task`, `split`, `group`, `observation_path`, `action_path`, `success`, and `unsafe` columns before the project can make a robot-policy or safety claim from it. The validator checks that train/test tasks match, group ids are disjoint, referenced files exist, actions are present, success labels are present, and unsafe-failure labels are present by default. `--allow-missing-unsafe` can be used only for non-safety runs.
+
+## Evidence-Level Guard
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.evidence_claims
+```
+
+Generated files:
+
+- `output/evidence_verification.json`
+- `output/evidence_matrix.json`
+- `output/EVIDENCE_MATRIX.md`
+
+The evidence matrix classifies each local verifier and explicitly records broad claims that are not established by the current repository, including scalable JEPA replacement, video foundation model, learned robot policy, real robot competence, end-to-end neural sheaf learning, and unique cohomology advantage.
+
 Run the hand-specified adapter benchmark:
 
 ```bash
@@ -327,7 +354,7 @@ uv run python -m pjepa_sim.verification.raw_record_external_claims
 ## Paper Build
 
 ```bash
-./paper/scripts/build-paper.sh
+./scripts/build-paper.sh
 ```
 
 The build writes `paper/PAPER.pdf`. The PDF is generated and ignored by git.

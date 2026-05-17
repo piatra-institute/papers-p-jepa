@@ -8,6 +8,30 @@ For an auditable local summary, run `uv run python -m pjepa_sim.cli.kth_sample_v
 
 In hidden-regime manipulation settings where visually identical situations have different action consequences, an agent can improve safety or probe efficiency by representing local action-conditioned predictive models, measuring local-model disagreement as obstruction, choosing safe probes to reduce the relevant disagreement, selecting task actions after the posterior has been repaired, and valuing information against unsafe outcomes and probe costs.
 
+## Practical Action-Grounding Challenge
+
+`simulation/pjepa_sim/benchmark/action_grounding.py` is the current practical-use harness. It bundles the strongest local mechanisms into a single executable challenge rather than asking a reader to infer usefulness from scattered component benchmarks.
+
+Current executable checks:
+
+- Passive video representation can predict future frames while failing to recover action regimes under visual shift.
+- Action-consequence representations beat appearance grouping and prior averaging.
+- A learned predicted-test representation beats appearance grouping without hidden-label features.
+- Learned safe probes repair aliased observations before action and reduce unsafe failure.
+- Learned restriction maps glue incompatible local action sections.
+- Action-grounded composition selects the intended precondition/postcondition skill chains.
+- All practical-use steps pass together in one challenge report.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.cli.action_grounding_challenge
+uv run python -m pjepa_sim.verification.action_grounding_challenge_claims
+```
+
+This is the strongest current practical claim for P-JEPA. It is still a controlled local harness, not a real robot, full real-video, or foundation-model benchmark.
+
 ## Exact Suite Evidence
 
 `simulation/pjepa_sim/benchmark/suites.py` evaluates exact evidence trees over the hidden regime world.
@@ -377,7 +401,7 @@ The strongest current implementation result is the raw-record run. It starts fro
 
 ## What Is Not Demonstrated
 
-The current implementation does not demonstrate learning a robot controller, tactile representation learning, language grounding, online regime discovery from uncontrolled logs, multi-task robot transfer, neural sheaf learning, a uniquely sheaf-theoretic advantage isolated from intervention, viability, and value-of-information effects, or scalability to internet video or foundation-model pretraining. The neural benchmarks learn from low-dimensional structured sensor features, probe-evidence features, and test identities, not tactile streams or end-to-end robot trajectories; their sample-efficiency, active-probing, boundary-condition, and seed-sweep results are toy results, not general data-efficiency or robotics claims. The pixel continuous-control benchmark is the first local move toward learned perception and harder control, but it still uses tiny rendered images, a small MLP, finite controller templates, and simulated 2D dynamics. It is not MuJoCo-scale robot learning. The video-representation benchmark is a local surrogate for passive JEPA-style prediction; it is not a result against V-JEPA, V-JEPA 2, or any video foundation model. The KTH sample check is real video but diagnostic negative evidence, not a P-JEPA video win. The manifest protocols and evidence-level guard are infrastructure, not performance evidence. The formal contract-interface benchmark does not run Kona, Aleph, Lean, or any external theorem prover; it is a finite local checker and export protocol for future proof/constraint backends. The active-probing boundary benchmark is useful precisely because it shows when the claim weakens: if sensors already identify the regime, probing has no marginal value; if probes are weak, the learned active-probing gain nearly disappears. The seed sweep supports the no-probe and unsafe-failure claims across tested deterministic seeds, but it also shows a nuance: value-aware probing is only slightly better than entropy probing on average and can lose to entropy on an individual seed. The synthetic scaling benchmark is a controlled regime-count sweep over engineered action-consequence fingerprints, not evidence of high-dimensional neural scaling. The gluing ablation learns linear restriction maps over engineered local section vectors; it is not an end-to-end neural sheaf. The representation, online cover-construction, and composition benchmarks use engineered action/probe fingerprints and skill tables rather than learned sensory encoders or learned options.
+The current implementation does not demonstrate learning a robot controller, tactile representation learning, language grounding, online regime discovery from uncontrolled logs, multi-task robot transfer, neural sheaf learning, a uniquely sheaf-theoretic advantage isolated from intervention, viability, and value-of-information effects, or scalability to internet video or foundation-model pretraining. The action-grounding challenge is an integrated practical-use harness over controlled local benchmarks; it does not remove those limits. The neural benchmarks learn from low-dimensional structured sensor features, probe-evidence features, and test identities, not tactile streams or end-to-end robot trajectories; their sample-efficiency, active-probing, boundary-condition, and seed-sweep results are toy results, not general data-efficiency or robotics claims. The pixel continuous-control benchmark is the first local move toward learned perception and harder control, but it still uses tiny rendered images, a small MLP, finite controller templates, and simulated 2D dynamics. It is not MuJoCo-scale robot learning. The video-representation benchmark is a local surrogate for passive JEPA-style prediction; it is not a result against V-JEPA, V-JEPA 2, or any video foundation model. The KTH sample check is real video but diagnostic negative evidence, not a P-JEPA video win. The manifest protocols and evidence-level guard are infrastructure, not performance evidence. The formal contract-interface benchmark does not run Kona, Aleph, Lean, or any external theorem prover; it is a finite local checker and export protocol for future proof/constraint backends. The active-probing boundary benchmark is useful precisely because it shows when the claim weakens: if sensors already identify the regime, probing has no marginal value; if probes are weak, the learned active-probing gain nearly disappears. The seed sweep supports the no-probe and unsafe-failure claims across tested deterministic seeds, but it also shows a nuance: value-aware probing is only slightly better than entropy probing on average and can lose to entropy on an individual seed. The synthetic scaling benchmark is a controlled regime-count sweep over engineered action-consequence fingerprints, not evidence of high-dimensional neural scaling. The gluing ablation learns linear restriction maps over engineered local section vectors; it is not an end-to-end neural sheaf. The representation, online cover-construction, and composition benchmarks use engineered action/probe fingerprints and skill tables rather than learned sensory encoders or learned options.
 
 These limits are not defects to hide. They define the correct scientific status: formal proposal plus controlled executable demonstrations.
 

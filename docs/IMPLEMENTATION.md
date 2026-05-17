@@ -14,7 +14,9 @@ This document explains how the simulation code is organized and how to extend it
 ### Benchmark Suite
 
 - `simulation/pjepa_sim/benchmark/suites.py`: the main exact evaluator. It supports configurable suites, exact evidence-tree evaluation, risk-adjusted scoring, posterior-entropy probing, obstruction probing, distinct world/belief local-section models, and the full P-JEPA stack.
+- `simulation/pjepa_sim/benchmark/action_grounding.py`: integrated practical-use harness. It bundles passive-representation failure, action-consequence transfer, neural predicted-test learning, safe probe repair, learned restriction-map gluing, and skill composition into one reviewer-facing challenge report.
 - `simulation/pjepa_sim/cli/benchmark.py`: CLI implementation for running benchmark suites and writing JSON, Markdown, and summary figures.
+- `simulation/pjepa_sim/cli/action_grounding_challenge.py`: CLI implementation for writing `output/action_grounding_challenge.json` and `output/action_grounding_challenge.md`.
 - `simulation/pjepa_sim/benchmark/configs/*.json`: benchmark suite definitions. Add new suites here when the mechanism should be tested under a new condition.
 
 ### Representation Benchmark
@@ -47,6 +49,7 @@ This document explains how the simulation code is organized and how to extend it
 - `simulation/pjepa_sim/verification/scaling_claims.py`: checks that action-consequence grouping remains above appearance and prior baselines throughout the synthetic regime-count sweep.
 - `simulation/pjepa_sim/verification/gluing_claims.py`: checks that learned restriction maps reduce overlap residual and improve action choice relative to identity/no-glue aggregation.
 - `simulation/pjepa_sim/verification/composition_claims.py`: checks that action-consequence grouping composes the intended skill chains under visual shift.
+- `simulation/pjepa_sim/verification/action_grounding_challenge_claims.py`: checks that the integrated practical-use harness passes its passive-failure, predicted-test, probe-repair, gluing, and composition steps together.
 
 ### External Adapter
 
@@ -95,6 +98,7 @@ This document explains how the simulation code is organized and how to extend it
 - `simulation/pjepa_sim/verification/scaling_claims.py`: synthetic scaling checks for action-grounded representation as hidden regime count increases.
 - `simulation/pjepa_sim/verification/gluing_claims.py`: restriction-map ablation checks for local-to-global consistency.
 - `simulation/pjepa_sim/verification/composition_claims.py`: skill-composition checks for precondition/postcondition chains.
+- `simulation/pjepa_sim/verification/action_grounding_challenge_claims.py`: integrated practical-use challenge checks tying the strongest local mechanisms into one benchmark.
 - `simulation/pjepa_sim/verification/external_claims.py`: hand-specified Meta-World adapter checks.
 - `simulation/pjepa_sim/verification/learned_external_claims.py`: supervised learned-model checks.
 - `simulation/pjepa_sim/verification/unsupervised_external_claims.py`: balanced unsupervised checks.

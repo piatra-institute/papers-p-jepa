@@ -17,6 +17,8 @@ Run from `simulation/`:
 ```bash
 uv run python -m pjepa_sim.cli.kth_sample_video_benchmark --download
 uv run python -m pjepa_sim.cli.verify_all
+uv run python -m pjepa_sim.cli.action_grounding_challenge
+uv run python -m pjepa_sim.verification.action_grounding_challenge_claims
 uv run python -m pjepa_sim.cli.run_all
 uv run python -m pjepa_sim.cli.benchmark --suite all --agents all
 uv run python -m pjepa_sim.verification.benchmark_claims
@@ -52,6 +54,8 @@ uv run python -m pjepa_sim.verification.composition_claims
 uv run python -m pjepa_sim.verification.evidence_claims
 ```
 
+The action-grounding challenge is the current practical-use harness. It bundles the strongest local tests into one report: passive-representation failure, learned predicted-test representation, safe probe repair, learned restriction-map gluing, and skill composition.
+
 The KTH command downloads six official sample AVI files into `simulation/data/kth_samples/`. That directory is gitignored, but the KTH verifier is part of the local audit; `verify_all` expects those files to be present.
 
 Prepare a full KTH-style real-video manifest when the complete dataset is available:
@@ -84,6 +88,7 @@ Rebuild the paper from the repository root:
 
 - [Architecture](docs/ARCHITECTURE.md): conceptual and code-level structure.
 - [Implementation](docs/IMPLEMENTATION.md): module map and extension points.
+- [Action-Grounding Challenge](docs/ACTION_GROUNDING_CHALLENGE.md): practical-use benchmark for passive-representation failure, predicted-test learning, probe repair, gluing, and composition.
 - [Scientific Claims](docs/SCIENTIFIC_CLAIMS.md): what is demonstrated, what is not demonstrated, and which verifier checks each claim.
 - [Claim Ledger](docs/CLAIM_LEDGER.md): reviewer-facing map from claims to executable evidence and limits.
 - [Reproducibility](docs/REPRODUCIBILITY.md): commands, dependencies, generated artifacts, and expected outputs.

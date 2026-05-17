@@ -20,6 +20,8 @@ From `simulation/`:
 uv run python -m compileall -q pjepa_sim
 uv run python -m pjepa_sim.cli.kth_sample_video_benchmark --download
 uv run python -m pjepa_sim.cli.verify_all
+uv run python -m pjepa_sim.cli.action_grounding_challenge
+uv run python -m pjepa_sim.verification.action_grounding_challenge_claims
 uv run python -m pjepa_sim.verification.benchmark_claims
 uv run python -m pjepa_sim.verification.representation_claims
 uv run python -m pjepa_sim.verification.neural_claims
@@ -77,7 +79,7 @@ From the repository root:
 ## Code Organization
 
 - `simulation/pjepa_sim/core/`: exact toy environment, mathematical primitives, original simple agents, and plotting helpers.
-- `simulation/pjepa_sim/benchmark/`: suite-level exact evaluator, entropy ablation, sheaf probe, and full P-JEPA stack.
+- `simulation/pjepa_sim/benchmark/`: suite-level exact evaluator, entropy ablation, sheaf probe, full P-JEPA stack, and the integrated action-grounding challenge harness.
 - `simulation/pjepa_sim/representation/`: action-grounded representation, neural intervention encoder, neural active probing, online cover-construction, scaling, gluing-ablation, and skill-composition benchmarks.
 - `simulation/pjepa_sim/perception/`: rendered-image and local continuous-control validity tests.
 - `simulation/pjepa_sim/real_video/`: load-bearing KTH sample real-video smoke test and manifest-based full-video benchmark protocol using downloaded AVI files.

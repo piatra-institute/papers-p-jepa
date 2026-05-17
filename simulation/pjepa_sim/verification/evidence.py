@@ -169,6 +169,13 @@ EVIDENCE_SPECS: tuple[EvidenceSpec, ...] = (
         does_not_support=("learned_options", "long_horizon_robot_planning"),
         is_performance_evidence=True,
     ),
+    EvidenceSpec(
+        benchmark="Action-grounding challenge",
+        level="integrated_practical_use_harness",
+        supports="The controlled local suite jointly tests passive-representation failure, predicted-test learning, safe probe repair, gluing, and skill composition.",
+        does_not_support=("robot_policy_learning", "real_video_advantage", "foundation_model_scaling"),
+        is_performance_evidence=True,
+    ),
 )
 
 

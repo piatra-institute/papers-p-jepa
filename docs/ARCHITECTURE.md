@@ -32,7 +32,7 @@ paper/
 simulation/
   pjepa_sim/
     core/                 exact hidden-regime world and original agents
-    benchmark/            suite evaluator, suite configs, and P-JEPA stack
+    benchmark/            suite evaluator, suite configs, P-JEPA stack, action-grounding challenge
       configs/            benchmark suite definitions
     external/             Meta-World adapter and learned estimators
     formal/               finite contract export for verification adapters
@@ -54,6 +54,7 @@ Key implementation modules:
 pjepa_sim/core/dishworld.py
 pjepa_sim/core/agents.py
 pjepa_sim/benchmark/suites.py
+pjepa_sim/benchmark/action_grounding.py
 pjepa_sim/external/
     metaworld_hidden_regime.py  hidden-regime wrapper and strategies
     learned_metaworld.py        learned/local-section estimators
@@ -89,6 +90,8 @@ The key agents are:
 - `active_psr_probe`: chooses probes by exact value of information.
 - `p_jepa_stack`: uses obstruction as a coherence gate and viability-aware value for probe/action choice.
 - `oracle_hidden_regime`: upper reference point with access to the true regime.
+
+`simulation/pjepa_sim/benchmark/action_grounding.py` is the integrated practical-use harness. It does not introduce a broader claim by itself; it collects the strongest local evidence into one executable challenge. The challenge asks whether passive representation fails where action consequences matter, whether predicted-test vectors can be learned from structured interventions, whether safe probes repair aliased observations, whether learned restriction maps align incompatible local sections, and whether the representation supports precondition/postcondition skill composition.
 
 ## Representation Benchmark
 

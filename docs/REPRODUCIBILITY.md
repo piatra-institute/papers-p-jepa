@@ -291,6 +291,24 @@ The manifest must contain `path`, `label`, and `split` columns. For a serious fu
 
 The KTH builder assumes the usual filename pattern, such as `person15_walking_d1_uncomp.avi`, and defaults to subjects `01-16` for train and `17-25` for test. The six-file KTH sample set intentionally fails this protocol because it contains only one subject; it remains a smoke test, not a full benchmark.
 
+## Action-Grounding Challenge
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.cli.action_grounding_challenge
+uv run python -m pjepa_sim.verification.action_grounding_challenge_claims
+```
+
+Generated files:
+
+- `output/action_grounding_challenge.json`
+- `output/action_grounding_challenge.md`
+- `output/action_grounding_challenge_verification.json`
+
+This is the current practical-use harness. It reuses the controlled local benchmarks to check passive-representation failure, action-consequence transfer, learned predicted-test representation, safe probe repair, learned restriction-map gluing, and skill composition in one report.
+
+See `docs/ACTION_GROUNDING_CHALLENGE.md` for the benchmark card and pass/fail thresholds.
+
 ## Robot Manifest Protocol
 
 ```bash

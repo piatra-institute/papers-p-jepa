@@ -128,6 +128,12 @@ LOCAL_VERIFIERS: tuple[VerifierSpec, ...] = (
         limitation="Minimal precondition/postcondition skill-table benchmark, not learned options.",
     ),
     VerifierSpec(
+        label="Action-grounding challenge",
+        module="pjepa_sim.verification.action_grounding_challenge_claims",
+        report_path=OUTPUT_DIR / "action_grounding_challenge_verification.json",
+        limitation="Integrated practical-use harness over controlled local benchmarks; not a full robotics or video-foundation-model result.",
+    ),
+    VerifierSpec(
         label="Evidence-level guard",
         module="pjepa_sim.verification.evidence_claims",
         report_path=OUTPUT_DIR / "evidence_verification.json",

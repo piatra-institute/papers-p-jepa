@@ -1,8 +1,10 @@
 # Next Validity Tests
 
-This document turns the paper's current limits into executable milestones. The current repository supports a narrow P-JEPA claim under controlled hidden-regime, learned-probe, rendered-pixel, real-video smoke-test, and protocol-check settings. It does not yet prove that P-JEPA is a scalable JEPA replacement, a robot policy learner, or a video foundation model.
+This document turns the paper's current limits into executable milestones. The current repository supports a narrow P-JEPA claim under controlled hidden-regime, learned-probe, rendered-pixel, action-grounding challenge, real-video smoke-test, and protocol-check settings. It does not yet prove that P-JEPA is a scalable JEPA replacement, a robot policy learner, or a video foundation model.
 
 The generated `simulation/output/EVIDENCE_MATRIX.md` is the current claim boundary. It should change only after a new benchmark supplies performance evidence rather than protocol-only infrastructure.
+
+The integrated action-grounding challenge is the current practical-use benchmark inside that boundary. It is useful for testing whether passive representation fails when action consequences matter and whether P-JEPA-style representations repair the failure, but it remains a controlled local harness.
 
 ## Milestone 1: Full Real-Video Benchmark
 

@@ -1,0 +1,10 @@
+{
+  "name": "costly_probe_v0",
+  "description": "Base task with higher probe risk, testing the tradeoff between representation repair and intervention cost.",
+  "probe_unsafe": {
+    "shear_probe": 0.030,
+    "tap_probe": 0.040,
+    "weigh_probe": 0.030
+  },
+  "probe_weight": 0.040
+}

@@ -1,0 +1,10 @@
+{
+  "name": "heldout_regime_v0",
+  "description": "Evaluation distribution shifted to the high-risk cracked and heavy regimes while the policy prior remains uniform.",
+  "eval_prior": {
+    "dry": 0.0,
+    "soapy": 0.0,
+    "cracked": 0.5,
+    "heavy": 0.5
+  }
+}

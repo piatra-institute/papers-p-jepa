@@ -1,0 +1,2 @@
+"""P-JEPA simulation package."""
+

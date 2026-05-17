@@ -1,0 +1,50 @@
+{
+  "name": "miscalibrated_sections_v0",
+  "description": "Base hidden-regime task where the policy acts from a noisy learned local-section model while evaluation uses the true world model.",
+  "belief_action_model": {
+    "dry": {
+      "lift_fast": {"success": 0.91, "unsafe": 0.04},
+      "lift_slow": {"success": 0.85, "unsafe": 0.02},
+      "grip_hard": {"success": 0.90, "unsafe": 0.04},
+      "two_contact_lift": {"success": 0.80, "unsafe": 0.02}
+    },
+    "soapy": {
+      "lift_fast": {"success": 0.30, "unsafe": 0.58},
+      "lift_slow": {"success": 0.64, "unsafe": 0.24},
+      "grip_hard": {"success": 0.46, "unsafe": 0.40},
+      "two_contact_lift": {"success": 0.82, "unsafe": 0.10}
+    },
+    "cracked": {
+      "lift_fast": {"success": 0.44, "unsafe": 0.42},
+      "lift_slow": {"success": 0.80, "unsafe": 0.12},
+      "grip_hard": {"success": 0.24, "unsafe": 0.68},
+      "two_contact_lift": {"success": 0.60, "unsafe": 0.30}
+    },
+    "heavy": {
+      "lift_fast": {"success": 0.38, "unsafe": 0.48},
+      "lift_slow": {"success": 0.54, "unsafe": 0.34},
+      "grip_hard": {"success": 0.84, "unsafe": 0.08},
+      "two_contact_lift": {"success": 0.70, "unsafe": 0.20}
+    }
+  },
+  "belief_probe_likelihood": {
+    "shear_probe": {
+      "dry": 0.08,
+      "soapy": 0.86,
+      "cracked": 0.10,
+      "heavy": 0.08
+    },
+    "tap_probe": {
+      "dry": 0.08,
+      "soapy": 0.10,
+      "cracked": 0.84,
+      "heavy": 0.12
+    },
+    "weigh_probe": {
+      "dry": 0.09,
+      "soapy": 0.09,
+      "cracked": 0.11,
+      "heavy": 0.86
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "noisy_probe_v0",
+  "description": "Base task with weaker probe evidence, testing whether obstruction-driven probing remains useful under noisy sensors.",
+  "probe_likelihood": {
+    "shear_probe": {
+      "dry": 0.18,
+      "soapy": 0.78,
+      "cracked": 0.20,
+      "heavy": 0.18
+    },
+    "tap_probe": {
+      "dry": 0.16,
+      "soapy": 0.18,
+      "cracked": 0.76,
+      "heavy": 0.20
+    },
+    "weigh_probe": {
+      "dry": 0.18,
+      "soapy": 0.17,
+      "cracked": 0.20,
+      "heavy": 0.78
+    }
+  }
+}

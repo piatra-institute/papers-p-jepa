@@ -280,6 +280,7 @@ __marimo__/
 
 # Generated benchmark artifacts
 simulation/output/
+simulation/data/
 
 # Generated paper artifacts
 paper/PAPER.pdf

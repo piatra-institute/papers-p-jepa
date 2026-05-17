@@ -2,6 +2,8 @@
 
 This project should make narrow, executable claims. It should not claim that P-JEPA solves robotics, learns perception, scales to foundation models, or establishes cohomology as independently superior to all active-learning objectives.
 
+For an auditable local summary, run `uv run python -m pjepa_sim.cli.kth_sample_video_benchmark --download` once from `simulation/`, then run `uv run python -m pjepa_sim.cli.verify_all`. It writes `output/CLAIMS_SUMMARY.md`, which lists every local claim, its verifier JSON, observed value, threshold, and limitation. The KTH sample real-video check is included in this command; optional Meta-World checks are excluded because they require external simulator dependencies.
+
 ## Main Demonstrated Claim
 
 In hidden-regime manipulation settings where visually identical situations have different action consequences, an agent can improve safety or probe efficiency by representing local action-conditioned predictive models, measuring local-model disagreement as obstruction, choosing safe probes to reduce the relevant disagreement, selecting task actions after the posterior has been repaired, and valuing information against unsafe outcomes and probe costs.
@@ -43,6 +45,193 @@ Verifier:
 ```bash
 cd simulation
 uv run python -m pjepa_sim.verification.representation_claims
+```
+
+## Neural Intervention Encoder Evidence
+
+`simulation/pjepa_sim/representation/neural.py` tests whether the action-consequence fingerprint can be learned from intervention records rather than supplied directly. The learner receives low-dimensional physical sensor observations and test identities, then predicts sampled intervention outcomes. Hidden regime labels are excluded from learner inputs and used only for diagnostics and evaluation.
+
+Current executable checks:
+
+- The neural P-representation beats appearance-only grouping under visual shift.
+- The neural P-representation beats the prior-average action model.
+- The predicted-test representation recovers hidden action regimes with high purity.
+- The neural P-representation approaches the engineered fingerprint reference score.
+- Hidden labels are not used as learner features.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.neural_claims
+```
+
+## Neural Sample-Efficiency Evidence
+
+`simulation/pjepa_sim/representation/neural.py` also tests sparse sampled intervention evidence by varying the number of intervention repeats per context while holding the context stream fixed.
+
+Current executable checks:
+
+- The neural P-representation beats the prior baseline at every tested repeat count.
+- The neural P-representation beats appearance-only grouping at every tested repeat count.
+- The learned predicted-test vectors keep high regime purity across repeat counts.
+- The neural P-representation approaches the engineered fingerprint reference across repeat counts.
+- Prediction error decreases as intervention repeats increase.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.neural_sample_efficiency_claims
+```
+
+## Neural Active-Probing Evidence
+
+`simulation/pjepa_sim/representation/neural_active.py` tests whether a learned predicted-test model can use safe probes when initial structured sensors alias hidden regimes. The learner receives low-dimensional sensor features, probe-evidence features, and test identities; hidden labels remain outside learner inputs.
+
+Current executable checks:
+
+- Learned active probing beats acting immediately from the ambiguous initial observation.
+- Learned active probing reduces unsafe failure relative to no probing.
+- Learned value-aware probing beats a learned entropy-probing baseline.
+- The active policy actually uses probes.
+- Learned active probing recovers much of the hidden-regime oracle value.
+- Hidden labels are not used as learner features.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.neural_active_probe_claims
+```
+
+## Neural Active-Probing Boundary Evidence
+
+`simulation/pjepa_sim/representation/neural_active.py` also tests the boundary conditions for that claim. The sweep compares aliased versus distinct initial sensors, informative versus weak probe likelihoods, and cheap versus costly probes.
+
+Current executable checks:
+
+- Active probing has a large score margin when sensors alias regimes and probes are informative.
+- The active-probing margin is smaller when initial sensors already identify the regime.
+- Weak probes reduce the active-probing margin.
+- Costly probes cause the value-aware policy to use less than the full probe budget.
+- Value-aware probing slightly beats entropy probing in the aliased informative setting.
+- Distinct sensors require fewer representation-repair probes than aliased sensors.
+- Hidden labels are not used as learner features.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.neural_active_boundary_claims
+```
+
+## Neural Active-Probing Seed-Sweep Evidence
+
+`simulation/pjepa_sim/representation/neural_active.py` repeats the aliased-sensor, informative-probe learned active-probing benchmark over multiple deterministic seeds. This is not a statistical confidence interval, but it checks that the headline safety and no-probe margins are not a one-seed artifact.
+
+Current executable checks:
+
+- Active probing beats no probing on average.
+- Active probing beats no probing for every tested seed.
+- Active probing reduces unsafe failure on average.
+- Active probing reduces unsafe failure for every tested seed.
+- Value-aware probing is entropy-competitive on average.
+- No tested seed shows a large regression against entropy probing.
+- Learned active probing remains close to the hidden-regime oracle on average.
+- Hidden labels are not used as learner features.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.neural_active_seed_sweep_claims
+```
+
+## Pixel Continuous-Control Evidence
+
+`simulation/pjepa_sim/perception/continuous.py` is the first local test that removes structured sensor vectors from the learned active-probing path. It renders small pixel observations that alias pairs of hidden continuous-control regimes, then evaluates continuous 2D reach-controller rollouts. The learner receives pixels, probe-evidence features, and test identities; hidden labels remain outside learner inputs.
+
+Current executable checks:
+
+- Pixel active probing beats no probing on risk-adjusted score.
+- Pixel active probing reduces unsafe continuous-control failures.
+- Pixel active probing remains competitive with entropy probing.
+- Pixel active probing actually uses probes.
+- Pixel active probing recovers some oracle value while leaving substantial headroom.
+- Hidden labels are not used as learner features.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.pixel_continuous_claims
+```
+
+## Video Representation Surrogate Evidence
+
+`simulation/pjepa_sim/perception/video_representation.py` tests the first local version of the JEPA comparison. A passive video predictor learns to predict future rendered frames from context frames, while the P-representation learner clusters sampled intervention consequences. The benchmark intentionally shifts visual styles between train and test, so passive visual prediction can remain accurate while action-regime identity becomes unstable.
+
+Current executable checks:
+
+- The action-conditioned representation beats the passive video representation on downstream risk-adjusted score.
+- The action-conditioned representation beats the prior-average action model.
+- The passive video predictor has low future-frame prediction error on its own objective.
+- The passive video representation has low action-regime purity under visual shift.
+- The action-conditioned representation has high action-regime purity.
+- The action-conditioned representation approaches the oracle regime score.
+- Hidden labels are not used as learner features.
+- The report explicitly records that no actual V-JEPA or video foundation model was run.
+- Corrupting or permuting intervention evidence destroys most of the action-representation advantage.
+- Increasing sampled intervention repeats reduces action-feature error.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.video_representation_claims
+```
+
+## Load-Bearing Real-Video Evidence
+
+`simulation/pjepa_sim/real_video/kth_samples.py` is the first non-generated video check. It downloads the six official sample AVI files from the KTH action database (Schuldt, Laptev & Caputo, 2004), decodes them with `ffmpeg`, segments them into temporal windows, and compares static appearance, passive next-frame, and temporal-motion descriptors.
+
+Current result on this sample split:
+
+- Static appearance accuracy: `0.896`.
+- Passive next-frame descriptor accuracy: `0.805`.
+- Temporal motion descriptor accuracy: `0.623`.
+
+This is a negative/diagnostic result for the current P-JEPA paper, not a win. The sample split is dominated by appearance/background identity. It is nevertheless load-bearing: it is part of `verify_all` and prevents the paper from treating synthetic video as sufficient. It shows that actual video benchmarking can contradict the local surrogate and that a serious claim requires a proper action-video or robot-video dataset with train/test separation by subject, scene, and ideally intervention/action metadata.
+
+The code now includes a manifest-based full-video protocol in `simulation/pjepa_sim/real_video/manifest_benchmark.py` and a KTH manifest builder in `simulation/pjepa_sim/real_video/manifest_builders.py`. This is not a new performance result. It is an audit guard for the next validity test: a full real-video benchmark must use actual files, must not place the same file in train and test, must cover the same classes across splits, must supply subject/scene/source groups for disjointness, and must include action/intervention metadata before it can support a P-JEPA action-grounding claim. The protocol verifier also checks that the six-file KTH sample set is rejected as a full train/test benchmark.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.cli.kth_sample_video_benchmark --download
+uv run python -m pjepa_sim.verification.kth_sample_video_claims
+```
+
+## Formal Contract-Interface Evidence
+
+`simulation/pjepa_sim/formal/contracts.py` tests whether P-JEPA outputs can be exported as finite contracts for safety and verification systems. The current local checker bounds expected unsafe failure, worst hidden-regime branch unsafe failure, residual obstruction, probe budget, and risk-adjusted score across the configured suites. This is a Kona/Aleph adapter protocol, not a Kona/Aleph run.
+
+Current executable checks:
+
+- P-JEPA satisfies all finite contracts across the configured local suites.
+- P-JEPA satisfies more finite contracts than the prior predictive baseline.
+- P-JEPA satisfies more finite contracts than entropy probing under the chosen safety-efficiency contract.
+- The checker returns machine-readable counterexamples for the prior baseline.
+- Every suite-agent pair exports one machine-readable contract artifact.
+- The report explicitly records that no external Kona or Aleph backend was executed.
+
+Verifier:
+
+```bash
+cd simulation
+uv run python -m pjepa_sim.verification.formal_contract_claims
 ```
 
 ## Online Cover-Construction Evidence
@@ -154,7 +343,7 @@ The strongest current implementation result is the raw-record run. It starts fro
 
 ## What Is Not Demonstrated
 
-The current implementation does not demonstrate learning a robot controller, visual perception from pixels, tactile representation learning, language grounding, online regime discovery from uncontrolled logs, multi-task robot transfer, neural sheaf learning, a uniquely sheaf-theoretic advantage isolated from intervention, viability, and value-of-information effects, or scalability to internet video or foundation-model pretraining. The synthetic scaling benchmark is a controlled regime-count sweep over engineered action-consequence fingerprints, not evidence of high-dimensional neural scaling. The gluing ablation learns linear restriction maps over engineered local section vectors; it is not an end-to-end neural sheaf. The representation, online cover-construction, and composition benchmarks use engineered action/probe fingerprints and skill tables rather than learned sensory encoders or learned options.
+The current implementation does not demonstrate learning a robot controller, tactile representation learning, language grounding, online regime discovery from uncontrolled logs, multi-task robot transfer, neural sheaf learning, a uniquely sheaf-theoretic advantage isolated from intervention, viability, and value-of-information effects, or scalability to internet video or foundation-model pretraining. The neural benchmarks learn from low-dimensional structured sensor features, probe-evidence features, and test identities, not tactile streams or end-to-end robot trajectories; their sample-efficiency, active-probing, boundary-condition, and seed-sweep results are toy results, not general data-efficiency or robotics claims. The pixel continuous-control benchmark is the first local move toward learned perception and harder control, but it still uses tiny rendered images, a small MLP, finite controller templates, and simulated 2D dynamics. It is not MuJoCo-scale robot learning. The video-representation benchmark is a local surrogate for passive JEPA-style prediction; it is not a result against V-JEPA, V-JEPA 2, or any video foundation model. The formal contract-interface benchmark does not run Kona, Aleph, Lean, or any external theorem prover; it is a finite local checker and export protocol for future proof/constraint backends. The active-probing boundary benchmark is useful precisely because it shows when the claim weakens: if sensors already identify the regime, probing has no marginal value; if probes are weak, the learned active-probing gain nearly disappears. The seed sweep supports the no-probe and unsafe-failure claims across tested deterministic seeds, but it also shows a nuance: value-aware probing is only slightly better than entropy probing on average and can lose to entropy on an individual seed. The synthetic scaling benchmark is a controlled regime-count sweep over engineered action-consequence fingerprints, not evidence of high-dimensional neural scaling. The gluing ablation learns linear restriction maps over engineered local section vectors; it is not an end-to-end neural sheaf. The representation, online cover-construction, and composition benchmarks use engineered action/probe fingerprints and skill tables rather than learned sensory encoders or learned options.
 
 These limits are not defects to hide. They define the correct scientific status: formal proposal plus controlled executable demonstrations.
 

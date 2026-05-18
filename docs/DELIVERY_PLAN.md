@@ -372,3 +372,71 @@ While this plan is in effect:
   appendix smoke tests.
 - The evidence matrix is regenerated and committed (or its current
   hash recorded) every time the paper changes.
+
+## 8. Update: hypothesis-driven Phase 0 and Phase 6 (JEPA augmentations)
+
+### Phase 0 completed
+
+The hypothesis-driven Phase 0 has been executed. See
+`docs/HYPOTHESIS_RESULTS.md` for the full results of H1-H5. Summary:
+
+- H1 confirmed (obstruction gate is operationally vacuous)
+- H2 falsified (active vs entropy survives 50-seed bootstrap)
+- H3 confirmed (trained MLP matched by frozen random projection)
+- H4 failed in unexpected direction (sheaf gluing actively hurts on
+  categorical regimes despite reducing coboundary energy 10x)
+- H5 inconclusive on the toy (variance-limited; bisim hurts at chosen
+  weight, viability shows positive trend)
+
+The original Phase 0 ("honesty pass" of deletions) has not been
+executed because the user reframed the task as hypothesis-testing
+before deletion. The deletions can now be performed by a follow-up
+session if the user chooses to adopt `paper/PAPER_v2.md` over the
+original.
+
+### Phase 6 — JEPA-augmentation typology (new)
+
+This phase replaces Phases 2-5 of the original plan with a tighter
+target: implement the mathematical commitments from the original
+paper as auxiliary losses on top of stock JEPA, rather than as a
+replacement architecture.
+
+The toy infrastructure landed in this session:
+
+- `simulation/pjepa_sim/jepa_toy/` — NumPy JEPA with toggleable
+  intervention, bisim, active masking, viability augmentations.
+- `simulation/pjepa_sim/representation/sheaf_toy.py` — real cellular
+  sheaf construction (learned cover, restriction maps, coboundary,
+  Laplacian, H^0 / H^1).
+- `docs/JEPA_AUGMENTATIONS.md` — PyTorch design specs for each
+  augmentation, with proposed V-JEPA-scale evaluation protocols.
+- `paper/PAPER_v2.md` — paper revision framed as augmentation
+  typology.
+
+The next concrete steps for Phase 6:
+
+1. **Port the toy losses to PyTorch on top of a public V-JEPA
+   reference implementation.** Start with intervention + composition
+   consistency. Use Bardes et al. (2024) reference code or a public
+   reimplementation.
+2. **Pretrain ablations at small scale.** SSv2 sub-sample
+   (~10K-50K clips), matched FLOPs across variants, ViT-S or ViT-B
+   encoder. ~2-3 weeks per ablation on 1-2 A6000-class GPUs.
+3. **Evaluate frozen-feature linear probe** on SSv2 action recognition
+   AND held-out intervention-prediction task. Bootstrap CIs over
+   evaluation episodes.
+4. **Add sheaf consistency on overlapping clips fourth.** Conditional
+   on the H4-positive prediction (continuous overlapping data should
+   help; categorical does not).
+5. **Add bisimulation with curriculum tuning fifth.** Needs working
+   intervention head first.
+6. **Add viability head when downstream is safety-critical** (e.g.,
+   robot policy on LIBERO).
+
+The success criterion is: at least one augmentation, on at least one
+ablation, beats stock V-JEPA at matched FLOPs on at least one
+intervention-relevant downstream metric with non-overlapping
+bootstrap CIs. Negative results are reported honestly per the
+standing rules above.
+
+Expected cost: 3-6 months for one researcher with 1-2 GPUs.

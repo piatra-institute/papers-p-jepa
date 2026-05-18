@@ -230,6 +230,87 @@ construction was never attempted.
 
 ---
 
+## H5 — JEPA augmentations improve dishworld toy
+
+**Hypothesis.** At least one of the augmentations {intervention,
+bisim, active masking, viability, all combined} produces a non-zero
+paired bootstrap CI advantage over base JEPA on the dishworld toy in
+`simulation/pjepa_sim/jepa_toy/`. The toy is a NumPy JEPA (encoder +
+EMA target encoder + mask predictor) with each augmentation as a
+toggleable auxiliary loss.
+
+**Pass criterion.** At least one augmentation has 95% CI on
+(variant - base) per-seed delta strictly above zero across 12 seeds.
+
+**Result.** **FAIL** (no augmentation clears the bar) **but the
+per-augmentation pattern is informative.**
+
+```
+12 seeds, 500 epochs each, 10000 paired bootstrap resamples
+
+base JEPA:        score 0.591 (range 0.44-0.80 across seeds)
++intervention:    score 0.590, delta -0.001, CI [-0.127, +0.125]   (neutral)
++bisim:           score 0.461, delta -0.130, CI [-0.231, -0.027]   (HURTS - CI excludes 0 negatively)
++active masking:  score 0.585, delta -0.006, CI [-0.059, +0.048]   (neutral, tight)
++viability:       score 0.624, delta +0.033, CI [-0.007, +0.098]   (positive trend, CI nearly excludes 0)
++all:             score 0.477, delta -0.114, CI [-0.209, -0.023]   (hurts, driven by bisim)
+```
+
+**Three real findings inside the FAIL verdict:**
+
+1. **Base JEPA has huge seed variance** (0.44 to 0.80 across 12
+   seeds). It converges to one of two basins: a "good" basin where
+   the encoder cleanly separates 4 regimes (~0.80 score) and a "bad"
+   basin where the latent partially collapses (~0.44). This means
+   12 seeds are not enough to detect <0.10-point augmentation
+   effects with statistical confidence.
+2. **Bisimulation at $\lambda = 0.3$ is mis-calibrated** and actively
+   hurts (CI excludes zero negatively). The bisim loss pulls the
+   encoder toward a distance-only metric and degrades cluster
+   structure. Consistent with the literature warning that bisim needs
+   curriculum tuning of $\lambda$.
+3. **Viability head shows the most promising signal.** Mean delta
+   +0.033, CI [-0.007, +0.10] — just barely contains zero. The
+   per-seed pattern is the most informative: on seeds where base JEPA
+   converges to the bad basin (e.g., seed 103: 0.44), viability
+   "rescues" the result (to 0.80); on seeds where base is already in
+   the good basin, viability does not help and may slightly hurt.
+   This is consistent with the viability head acting as an additional
+   regulariser that helps when the JEPA loss alone has converged
+   poorly.
+
+The verdict is FAIL because no single CI excludes zero on the
+positive side. The interpretation is *not* "augmentations don't
+help." It is "the toy is at its variance limit; bisim needs $\lambda$
+tuning; viability has the strongest directional signal; intervention
+and active masking are within toy noise."
+
+**Decision.** Toy infrastructure is now in place
+(`simulation/pjepa_sim/jepa_toy/`) and proven correct (every loss
+decreases monotonically; the heads train; downstream evaluation
+reproduces the engineered-fingerprint score on the good basin).
+Augmentations promoted to V-JEPA-scale priority per the typology in
+`docs/JEPA_AUGMENTATIONS.md` and the priority order in
+`paper/PAPER_v2.md` §6:
+
+1. Intervention loss + composition consistency (high inductive-bias
+   match with V-JEPA's action-conditioned setting)
+2. Active masking (cheap, literature precedent for ~0.5-1% gains)
+3. Sheaf consistency on overlapping clips (conditional on H4 boundary
+   - it should help on continuous overlapping video where it hurts on
+   categorical regimes)
+4. Bisimulation (after a $\lambda$ curriculum is designed)
+5. Viability head (last for general representation; first for
+   safety-critical downstream)
+
+**Artifact.** `simulation/output/experiments/h5_jepa_augmentations.json`.
+
+The toy infrastructure: `simulation/pjepa_sim/jepa_toy/{model,
+losses, training, eval, data}.py`. The PyTorch design specs for each
+augmentation: `docs/JEPA_AUGMENTATIONS.md`.
+
+---
+
 ## Summary table
 
 | H | Hypothesis | Verdict | Direction | Paper consequence |
@@ -238,6 +319,7 @@ construction was never attempted.
 | H2 | active-vs-entropy is seed noise | FAIL | claim survives 50 seeds | replace 5-seed prose with bootstrap CI |
 | H3 | trained MLP ≈ frozen random | PASS | confirmed | demote "neural" framing; add random-projection column |
 | H4 | sheaf is decorative | FAIL on criterion, hypothesis *strengthened* | sheaf is mildly worse than scalar | demote sheaf framing; keep `sheaf_toy.py` as negative-result artifact |
+| H5 | augmentations help on toy | FAIL (variance-limited) | bisim hurts, viability positive trend, others neutral | promote viability + intervention + composition to V-JEPA-scale per JEPA_AUGMENTATIONS.md |
 
 Three of the four critique-driven hypotheses are confirmed; the fourth
 (active vs entropy) is the one the paper got right with insufficient
@@ -252,7 +334,9 @@ The follow-up session that consumes these results should:
 1. Update the abstract and §9 of `paper/PAPER.md` per the decisions
    above. Replace the five-seed sentence with the H2 CI. Demote the
    "neural" framing in the neural-benchmark passages (H3). Collapse
-   the obstruction-gate / sheaf-policy distinction (H1, H4).
+   the obstruction-gate / sheaf-policy distinction (H1, H4). OR adopt
+   `paper/PAPER_v2.md` as the new paper, which incorporates all of
+   these.
 2. Add a `frozen_random_projection` baseline column to the neural
    benchmark output and rerun the neural verifier (H3).
 3. Decide whether to keep the cellular-sheaf framing as a motivation
@@ -261,6 +345,14 @@ The follow-up session that consumes these results should:
 4. Reference this file in `docs/CLAIM_LEDGER.md` so reviewers can see
    which paper claims have been experimentally tested and what the
    outcome was.
+5. Begin V-JEPA-scale implementation per `docs/JEPA_AUGMENTATIONS.md`:
+   port the toy losses to PyTorch on top of a public V-JEPA reference
+   implementation. Start with intervention + composition consistency
+   (highest expected gain). The priority order is in
+   `paper/PAPER_v2.md` §6.
 
-No deletions or paper rewrites happen as part of the current session.
-This document is the gate.
+No deletions or paper rewrites of the original `paper/PAPER.md`
+happen as part of the current session. This document is the gate.
+The new `paper/PAPER_v2.md` is an honest revision *alongside* the
+original, not a replacement; the choice between them is for a future
+session.

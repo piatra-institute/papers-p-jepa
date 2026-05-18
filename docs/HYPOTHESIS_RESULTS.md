@@ -291,7 +291,7 @@ decreases monotonically; the heads train; downstream evaluation
 reproduces the engineered-fingerprint score on the good basin).
 Augmentations promoted to V-JEPA-scale priority per the typology in
 `docs/JEPA_AUGMENTATIONS.md` and the priority order in
-`paper/PAPER_v2.md` §6:
+`paper/PAPER.md` §6:
 
 1. Intervention loss + composition consistency (high inductive-bias
    match with V-JEPA's action-conditioned setting)
@@ -331,12 +331,12 @@ evidence and now has proper evidence for.
 
 The follow-up session that consumes these results should:
 
-1. Update the abstract and §9 of `paper/PAPER.md` per the decisions
-   above. Replace the five-seed sentence with the H2 CI. Demote the
-   "neural" framing in the neural-benchmark passages (H3). Collapse
-   the obstruction-gate / sheaf-policy distinction (H1, H4). OR adopt
-   `paper/PAPER_v2.md` as the new paper, which incorporates all of
-   these.
+1. Done in this session: `paper/PAPER.md` has been replaced with the
+   augmentation-typology revision that incorporates the H1-H4
+   decisions (5-seed sentence → H2 CI; "neural" framing demoted;
+   obstruction-gate / sheaf-policy distinction collapsed; sheaf
+   framing moved from title to motivation). The original 80KB P-JEPA
+   paper is preserved in git history at commit `bd7da45`.
 2. Add a `frozen_random_projection` baseline column to the neural
    benchmark output and rerun the neural verifier (H3).
 3. Decide whether to keep the cellular-sheaf framing as a motivation
@@ -349,10 +349,9 @@ The follow-up session that consumes these results should:
    port the toy losses to PyTorch on top of a public V-JEPA reference
    implementation. Start with intervention + composition consistency
    (highest expected gain). The priority order is in
-   `paper/PAPER_v2.md` §6.
+   `paper/PAPER.md` §6.
 
-No deletions or paper rewrites of the original `paper/PAPER.md`
-happen as part of the current session. This document is the gate.
-The new `paper/PAPER_v2.md` is an honest revision *alongside* the
-original, not a replacement; the choice between them is for a future
-session.
+`paper/PAPER.md` was replaced in this session with the
+augmentation-typology revision. The original P-JEPA paper is in git
+history (commit `bd7da45`) and can be retrieved with
+`git show bd7da45:paper/PAPER.md`.

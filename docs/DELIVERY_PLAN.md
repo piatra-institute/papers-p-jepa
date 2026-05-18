@@ -388,11 +388,13 @@ The hypothesis-driven Phase 0 has been executed. See
 - H5 inconclusive on the toy (variance-limited; bisim hurts at chosen
   weight, viability shows positive trend)
 
-The original Phase 0 ("honesty pass" of deletions) has not been
-executed because the user reframed the task as hypothesis-testing
-before deletion. The deletions can now be performed by a follow-up
-session if the user chooses to adopt `paper/PAPER_v2.md` over the
-original.
+The original Phase 0 ("honesty pass" of deletions) was performed as a
+single replacement: `paper/PAPER.md` was overwritten with the
+augmentation-typology revision after H1-H5 landed. The original P-JEPA
+paper content is preserved in git history at commit `bd7da45` and
+earlier (`git show bd7da45:paper/PAPER.md`). A follow-up session can
+still perform surgical edits to recover sections from the original if
+needed.
 
 ### Phase 6 — JEPA-augmentation typology (new)
 
@@ -410,8 +412,8 @@ The toy infrastructure landed in this session:
   Laplacian, H^0 / H^1).
 - `docs/JEPA_AUGMENTATIONS.md` — PyTorch design specs for each
   augmentation, with proposed V-JEPA-scale evaluation protocols.
-- `paper/PAPER_v2.md` — paper revision framed as augmentation
-  typology.
+- `paper/PAPER.md` — paper rewritten as augmentation typology
+  (the original 80KB P-JEPA paper is in git history at `bd7da45`).
 
 The next concrete steps for Phase 6:
 

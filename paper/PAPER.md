@@ -24,8 +24,8 @@ about the data, with toy evidence for directional effects and
 preregistered evaluation protocols for V-JEPA-scale tests. The toy
 evidence (5 preregistered hypothesis tests on dishworld, 8 generated
 JSON artifacts) shows that (i) the obstruction gate in the original
-paper is a no-op on every reported suite — the "p_jepa_stack" agent
-is numerically identical to a plain exact value-of-information agent;
+paper is a no-op on every reported suite, with the "p_jepa_stack"
+agent numerically identical to a plain exact value-of-information agent;
 (ii) value-aware active probing beats entropy probing with paired
 bootstrap CI [+0.009, +0.017] across 50 deterministic seeds; (iii)
 the trained intervention encoder is matched within CI [+0.000, +0.005]
@@ -149,7 +149,7 @@ $$
 Active masking is not in this sum because it is a sampler, not a
 loss. The $\lambda$ values are augmentation-specific tuning knobs.
 
-The original paper presented this as $\mathcal{L}_{P\text{-JEPA}}$ —
+The original paper presented this as $\mathcal{L}_{P\text{-JEPA}}$,
 a single objective. Treating the terms as separable augmentations is
 what allows ablation: switching individual $\lambda$ values to zero
 and measuring downstream performance.
@@ -174,8 +174,8 @@ The toy exists for two reasons:
    of the simulation. A toy advantage suggests scale will likely
    reproduce; a toy disadvantage suggests the augmentation's
    inductive bias may not match this data type. Both readings are
-   weak — the toy is at its variance limit — but cheaper than GPU
-   time.
+   weak, since the toy is at its variance limit, but they cost far less
+   than GPU time.
 
 The toy is not a real V-JEPA result. A V-JEPA result requires
 PyTorch, a real video dataset, matched compute, and frozen-feature
@@ -191,7 +191,7 @@ before running. Results land in
 `docs/HYPOTHESIS_RESULTS.md` and the JSON artifacts in
 `simulation/output/experiments/`. The headline numbers:
 
-### H1 — Obstruction gate is a no-op
+### H1: Obstruction gate is a no-op
 
 The paper's `p_jepa_stack` agent and `active_psr_probe` agent both
 call the same `_decision_probe_result` function with different
@@ -204,7 +204,7 @@ distinction in the original paper between "the P-JEPA stack" and
 "the active PSR probe" is operationally vacuous on the reported
 suites.
 
-### H2 — Active vs entropy probing is seed noise
+### H2: Active vs entropy probing is seed noise
 
 The original paper reports a 5-seed sweep where value-aware active
 probing beats entropy probing by 0.005 with one seed favouring
@@ -215,7 +215,7 @@ The original 5-seed sweep was underpowered, not wrong. The
 "value-aware probing beats entropy" claim is supported and should
 be reported with this CI.
 
-### H3 — Trained encoder ≈ frozen random projection
+### H3: Trained encoder ≈ frozen random projection
 
 The "neural P-representation" was claimed to recover regimes via
 learned representation. **Result: PASS** (hypothesis confirmed).
@@ -227,7 +227,7 @@ on linearly-separable Bernoulli sources, not by gradient training.
 The "neural" framing is decorative; the mechanism is test-vector
 clustering.
 
-### H4 — Sheaf framing is decorative
+### H4: Sheaf framing is decorative
 
 Implemented a real cellular sheaf in
 `simulation/pjepa_sim/representation/sheaf_toy.py`: learned cover
@@ -236,7 +236,7 @@ learned linear restriction maps with ridge regularization, assembled
 coboundary $\delta_0$, sheaf Laplacian $L_0 = \delta_0^\top \delta_0$,
 $\dim H^0 \approx 9.8$, $\dim H^1 \approx 42.3$ on the 1-skeleton.
 **Result: FAIL on preregistered criterion in unexpected direction**.
-Coboundary energy drops 10× from gluing (0.354 → 0.034) — the math
+Coboundary energy drops 10× from gluing (0.354 to 0.034). The math
 works. But the glued centers score 0.798 vs scalar 0.802, with CI95
 [−0.005, −0.004] entirely negative. The sheaf inductive bias
 *hurts* downstream action choice on categorical hidden state. The
@@ -246,7 +246,7 @@ prediction: on continuous overlapping data (V-JEPA temporal clips),
 where there genuinely is a global section to recover, the same
 mechanism should help. That experiment is in §6.
 
-### H5 — JEPA augmentations help on the toy
+### H5: JEPA augmentations help on the toy
 
 Trained base JEPA + each augmentation (intervention, bisim, active
 masking, viability) + all combined, 12 seeds × 6 variants on
@@ -256,7 +256,7 @@ verdict:
 
 | Variant | Mean score | Mean − base | CI95 |
 |---|---:|---:|---|
-| base JEPA | 0.591 | — | — |
+| base JEPA | 0.591 | n/a | n/a |
 | +intervention | 0.590 | −0.001 | [−0.127, +0.125] |
 | +bisim | 0.461 | −0.130 | [−0.231, −0.027] |
 | +active masking | 0.585 | −0.006 | [−0.059, +0.048] |
@@ -267,10 +267,10 @@ Three real findings: (i) **bisim at $\lambda = 0.3$ is
 mis-calibrated** and actively hurts (CI excludes zero negatively),
 consistent with the literature warning that bisim needs careful
 curriculum tuning; (ii) **viability shows a positive trend** with CI
-nearly excluding zero — most informative on seeds where base JEPA
+nearly excluding zero, most informative on seeds where base JEPA
 converges to a degenerate latent, where viability "rescues" the
 result; (iii) **intervention and active masking are neutral** at
-this scale — the toy's variance dwarfs the augmentation effect.
+this scale. The toy's variance dwarfs the augmentation effect.
 
 The result does not falsify the augmentations. It establishes that
 the toy is at its detection limit and that bisim specifically needs
@@ -341,9 +341,9 @@ evidence.
 
 The cellular sheaf in `representation/sheaf_toy.py` is the only place
 in the project (and possibly in the JEPA-adjacent literature) where a
-real cellular sheaf — learned cover, learned linear restrictions,
-assembled coboundary, sheaf Laplacian, reported cohomology dimensions
-— is constructed and ablated on a representation-learning task. The
+real cellular sheaf (learned cover, learned linear restrictions,
+assembled coboundary, sheaf Laplacian, reported cohomology dimensions)
+is constructed and ablated on a representation-learning task. The
 H4 negative result is therefore a genuine empirical finding about the
 limits of sheaf-style coherence as a representation-learning prior,
 not just an absence of evidence.
@@ -394,8 +394,8 @@ evaluation protocol. The priority order in §6 is the contribution.
 
 A follow-up paper that runs even one of the augmentations at V-JEPA
 scale on Something-Something V2 or DROID would be the natural sequel.
-The infrastructure for it — JEPA toy, hypothesis-test framework,
-sheaf construction, design specs — is in this repository.
+The infrastructure for it (JEPA toy, hypothesis-test framework,
+sheaf construction, design specs) is in this repository.
 
 ## References
 

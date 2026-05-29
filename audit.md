@@ -3,6 +3,19 @@
 Dated log of editorial passes and verification runs. Newest first.
 (P-JEPA's deeper records live in `docs/CRITIQUE.md`, `docs/HYPOTHESIS_RESULTS.md`.)
 
+## 2026-05-29 — upgrade pass (Group A)
+
+Scope: §5 led with the H1–H5 verdict structure so the reader sees the five
+results before the prose unpacks each.
+
+Changes:
+- Added a 5-row verdict table at the top of §5 (hypothesis · verdict · evidence),
+  numbers matching the per-hypothesis prose and the claim ledger.
+
+Verification: voice 0 errors; claim-ledger present (24 verification files);
+build clean, 10 pages; check => PASS. (Title was set to "P-JEPA: JEPA
+Augmentations from Embodied and Causal Mathematics" in the prior pass.)
+
 ## 2026-05-29 — workspace alignment + voice cleanup
 
 Scope: bring P-JEPA to the workspace publication bar.

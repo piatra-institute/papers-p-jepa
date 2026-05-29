@@ -189,7 +189,17 @@ is testable at scale."
 Each hypothesis was registered with a binary pass/fail criterion
 before running. Results land in
 `docs/HYPOTHESIS_RESULTS.md` and the JSON artifacts in
-`simulation/output/experiments/`. The headline numbers:
+`simulation/output/experiments/`. The five verdicts:
+
+| # | Preregistered hypothesis | Verdict | Evidence |
+|---|---|---|---|
+| H1 | the obstruction gate is a no-op | confirmed | the gate never fires; the two agents are bit-identical |
+| H2 | active vs entropy probing is seed noise | rejected | active beats entropy by $+0.0130$, CI95 $[+0.0094, +0.0166]$, 41/50 seeds |
+| H3 | the trained encoder matches a frozen random projection | confirmed | score delta CI95 $[+0.000, +0.005]$ |
+| H4 | the sheaf framing is decorative | confirmed, and strengthened | the glued centres score below scalar, CI95 $[-0.005, -0.004]$ |
+| H5 | the JEPA augmentations help on the toy | not supported | no augmentation has a CI95 strictly above zero |
+
+Each verdict is unpacked below.
 
 ### H1: Obstruction gate is a no-op
 

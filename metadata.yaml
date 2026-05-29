@@ -1,0 +1,13 @@
+slug: P-JEPA
+web_slug: p-jepa
+title: "P-JEPA"
+header: "P-JEPA"
+created: "2026-05"        # inception month (drives YYYY/MM archive path)
+date: null            # publication month (shown on web)
+paper_dir: paper
+has_simulation: true
+claims_target: claim-ledger      # results.json | claim-ledger | none
+repo: git@github.com:piatra-institute/papers-p-jepa.git
+github: https://github.com/piatra-institute/papers-p-jepa
+status: built              # draft | built | published
+abstract: null

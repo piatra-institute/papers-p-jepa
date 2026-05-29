@@ -1,7 +1,7 @@
 ---
 title: |
-  JEPA Augmentations from Embodied and Causal Mathematics:\
-  A Typology with Toy Evidence
+  P-JEPA:\
+  JEPA Augmentations from Embodied and Causal Mathematics
 author: PIATRA . INSTITUTE
 date: May 2026
 ---

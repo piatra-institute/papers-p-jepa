@@ -12,7 +12,7 @@ The original P-JEPA proposal claimed to extend Joint Embedding
 Predictive Architectures (JEPA) by replacing the homogeneous target
 embedding with a sheaf-valued predictive state over a stratified
 interaction space. That framing was decorative: the implementation
-computed a posterior-weighted variance, not a coboundary, and the
+computed a posterior-weighted variance in place of a coboundary, and the
 sheaf structure was never wired into a training loop. This revision
 discards the replacement framing and adopts a plug-in framing
 instead. JEPA is treated as the working substrate; each piece of
@@ -36,8 +36,8 @@ sheaf reduces coboundary energy 10× as theory predicts but produces
 ported as toggleable terms, the viability head shows a positive trend
 (CI [−0.007, +0.10]) while the bisimulation regularizer at the chosen
 weight is mis-calibrated and hurts (CI [−0.23, −0.03]). The toy is at
-its variance limit and these results are *directional* signals for
-V-JEPA-scale ablation, not quantitative rankings. The paper closes
+its variance limit, so these results are *directional* signals for
+V-JEPA-scale ablation rather than quantitative rankings. The paper closes
 with a priority order for V-JEPA implementation: intervention loss
 first, composition consistency and active masking next, sheaf
 consistency on overlapping clips conditional on the H4 boundary,
@@ -146,8 +146,8 @@ $$
 + \lambda_{\text{comp}}\,\mathcal{L}_{\text{comp}}.
 $$
 
-Active masking is not in this sum because it is a sampler, not a
-loss. The $\lambda$ values are augmentation-specific tuning knobs.
+Active masking is absent from this sum because it acts as a sampler
+rather than a loss. The $\lambda$ values are augmentation-specific tuning knobs.
 
 The original paper presented this as $\mathcal{L}_{P\text{-JEPA}}$,
 a single objective. Treating the terms as separable augmentations is
@@ -221,9 +221,9 @@ probing beats entropy probing by 0.005 with one seed favouring
 entropy. **Result: FAIL** (hypothesis rejected). With 50 seeds and
 10000 paired bootstrap resamples, active beats entropy by mean
 +0.0130, CI95 [+0.0094, +0.0166], with 41/50 seeds favouring active.
-The original 5-seed sweep was underpowered, not wrong. The
-"value-aware probing beats entropy" claim is supported and should
-be reported with this CI.
+The original 5-seed sweep reached the right direction with too few
+seeds to resolve it. The "value-aware probing beats entropy" claim is
+supported and should be reported with this CI.
 
 ### H3: Trained encoder ≈ frozen random projection
 
@@ -233,9 +233,9 @@ Across 10 seeds, the trained MLP gets risk-adjusted score 0.802 and
 cluster purity 1.000. A frozen random TinyMLP of identical width
 gets 0.800 and 0.994. Delta CI95 [+0.000, +0.005] for score,
 [+0.000, +0.018] for purity. The work is being done by clustering
-on linearly-separable Bernoulli sources, not by gradient training.
-The "neural" framing is decorative; the mechanism is test-vector
-clustering.
+on linearly-separable Bernoulli sources; gradient training adds
+nothing measurable. The "neural" framing is decorative; the mechanism
+is test-vector clustering.
 
 ### H4: Sheaf framing is decorative
 
@@ -308,25 +308,25 @@ implementer:
   rollouts.
 - **Try active masking third.** Cheap, with literature precedent.
 - **Try sheaf consistency on overlapping clips fourth.** Conditional
-  on the H4 boundary: works on continuous overlapping data, not on
-  categorical regimes.
+  on the H4 boundary: it works on continuous overlapping data and
+  fails on categorical regimes.
 - **Add bisimulation fifth.** Requires a working intervention head
   first and careful $\lambda$ curriculum.
 - **Add viability last** unless the downstream is safety-critical, in
   which case first.
 
 This replaces the original paper's "loss with five auxiliary terms"
-framing. It is a priority order, not an architecture.
+framing with a priority order over augmentations.
 
-## 7. Limits
+## 7. What the toy can and cannot show
 
 The toy is small. Dishworld has 4 categorical regimes, 11-dim
 contexts, and Bernoulli outcomes. The H5 toy is at its variance limit
 (base JEPA itself ranges 0.44-0.80 across seeds). A toy negative is
 weak evidence against scale gain; a toy positive is weak evidence
-for. The whole point of §3's PyTorch signatures and `docs/JEPA_AUGMENTATIONS.md`'s
-proposed evaluations is that the real test is at V-JEPA scale, which
-this repository cannot execute.
+for. §3's PyTorch signatures and `docs/JEPA_AUGMENTATIONS.md`'s
+proposed evaluations exist because the real test is at V-JEPA scale,
+which this repository cannot execute.
 
 The mathematical objects from the original paper are honestly tested.
 H1 shows the obstruction gate is operationally vacuous. H4 shows the
@@ -338,8 +338,9 @@ directional signal on the auxiliary losses.
 The original paper's §9 hidden-regime table, §10 Meta-World adapter,
 and §11 formal contract interface are not falsified by this revision.
 They are reframed: they remain useful as evidence that the *VOI part*
-of the original P-JEPA stack works (it ties exact Bayesian VOI; see
-H1), not as evidence that the sheaf or "neural" framings work.
+of the original P-JEPA stack works, tying exact Bayesian VOI (see
+H1). They say nothing about whether the sheaf or "neural" framings
+work.
 
 The paper does not establish that any augmentation beats stock V-JEPA
 at scale. It establishes that the augmentations have precise
@@ -386,11 +387,11 @@ constitute a real positive result for each augmentation.
 
 ## 9. What this paper is not
 
-It is not a new architecture. It is not a foundation model proposal.
-It does not claim that any auxiliary loss beats V-JEPA at scale. It
-does not run any benchmark against I-JEPA, V-JEPA, V-JEPA 2, or any
-video foundation model. It does not learn a robot controller, real
-perception, language grounding, or end-to-end neural sheaf. The
+This paper proposes neither a new architecture nor a foundation
+model. It makes no claim that any auxiliary loss beats V-JEPA at
+scale. It runs no benchmark against I-JEPA, V-JEPA, V-JEPA 2, or any
+video foundation model. It learns no robot controller, no real
+perception, no language grounding, no end-to-end neural sheaf. The
 cellular sheaf construction in `sheaf_toy.py` is the only sheaf in
 the project, and on the only dataset it was tested on (dishworld) it
 produced a negative result.

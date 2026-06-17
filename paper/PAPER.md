@@ -25,7 +25,7 @@ preregistered evaluation protocols for V-JEPA-scale tests. The toy
 evidence (5 preregistered hypothesis tests on dishworld, 8 generated
 JSON artifacts) shows that (i) the obstruction gate in the original
 paper is a no-op on every reported suite, with the "p_jepa_stack"
-agent numerically identical to a plain exact value-of-information agent;
+agent numerically identical to a plain value-of-information agent;
 (ii) value-aware active probing beats entropy probing with paired
 bootstrap CI [+0.009, +0.017] across 50 deterministic seeds; (iii)
 the trained intervention encoder is matched within CI [+0.000, +0.005]
@@ -75,7 +75,7 @@ that can be defended with experiments.
 The argument has four parts:
 
 1. **§2-3 The mathematics, restated as loss terms.** Each commitment
-   from the original paper is given its precise loss-function form
+   from the original paper is given its loss-function form
    and its PyTorch signature, suitable for adding to a V-JEPA
    reference implementation.
 2. **§4 The toy.** A small NumPy JEPA on dishworld with each loss as
@@ -181,7 +181,7 @@ The toy is not a real V-JEPA result. A V-JEPA result requires
 PyTorch, a real video dataset, matched compute, and frozen-feature
 linear probing against I-JEPA / V-JEPA baselines. None of these
 exists in this repository. The toy is the bridge from "the
-augmentation has a precise mathematical form" to "the augmentation
+augmentation has a mathematical form" to "the augmentation
 is testable at scale."
 
 ## 5. Preregistered hypothesis tests
@@ -338,12 +338,12 @@ directional signal on the auxiliary losses.
 The original paper's §9 hidden-regime table, §10 Meta-World adapter,
 and §11 formal contract interface are not falsified by this revision.
 They are reframed: they remain useful as evidence that the *VOI part*
-of the original P-JEPA stack works, tying exact Bayesian VOI (see
+of the original P-JEPA stack works, tying Bayesian VOI (see
 H1). They say nothing about whether the sheaf or "neural" framings
 work.
 
 The paper does not establish that any augmentation beats stock V-JEPA
-at scale. It establishes that the augmentations have precise
+at scale. It establishes that the augmentations have well-defined
 mathematical forms, that they are correctly implemented in a NumPy
 toy, that one (viability) shows a positive trend even on a
 variance-limited toy, that one (bisim) needs tuning before scale, and
@@ -381,7 +381,7 @@ hypotheses passed, which failed, and which decisions the results
 imply for future revisions.
 
 `docs/JEPA_AUGMENTATIONS.md` is the PyTorch design document. It
-gives precise loss signatures, where each loss plugs into a V-JEPA
+gives the loss signatures, where each loss plugs into a V-JEPA
 reference implementation, and the success criterion that would
 constitute a real positive result for each augmentation.
 
@@ -396,10 +396,10 @@ cellular sheaf construction in `sheaf_toy.py` is the only sheaf in
 the project, and on the only dataset it was tested on (dishworld) it
 produced a negative result.
 
-What this paper *is*: an honest typology of when each of the
+What this paper *is*: a typology of when each of the
 embodied/causal mathematical commitments from the original P-JEPA
 proposal is likely to improve a stock JEPA training recipe. Each
-augmentation has a precise loss-function form, a PyTorch signature, a
+augmentation has a loss-function form, a PyTorch signature, a
 toy-scale gradient-flow verification, and a preregistered V-JEPA-scale
 evaluation protocol. The priority order in §6 is the contribution.
 

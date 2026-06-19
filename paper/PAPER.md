@@ -18,10 +18,16 @@ discards the replacement framing and adopts a plug-in framing
 instead. JEPA is treated as the working substrate; each piece of
 embodied or causal mathematics from the original paper is implemented
 as an auxiliary loss, head, or sampler that can be added to a stock
-JEPA training loop and ablated. The contribution is the resulting
-*typology*: which auxiliary losses match which structural assumptions
-about the data, with toy evidence for directional effects and
-preregistered evaluation protocols for V-JEPA-scale tests. The toy
+JEPA training loop and ablated. The paper has two kinds of content,
+and they have very different epistemic status. The validated content
+is a battery of preregistered null and negative results about a bespoke
+toy and the original paper's own unpublished code. The conjectured
+content is a *typology*: a proposed mapping from auxiliary losses to
+the structural assumptions about the data they match, together with a
+priority order for V-JEPA-scale implementation. The typology is not a
+validated finding. It is a research agenda derived from inductive-bias
+reasoning and offered as a set of hypotheses, untested at scale, and
+in tension with the one place the toy can check it (see below). The toy
 evidence (5 preregistered hypothesis tests on dishworld, 8 generated
 JSON artifacts) shows that (i) the obstruction gate in the original
 paper is a no-op on every reported suite, with the "p_jepa_stack"
@@ -38,12 +44,18 @@ ported as toggleable terms, the viability head shows a positive trend
 weight is mis-calibrated and hurts (CI [−0.23, −0.03]). The toy is at
 its variance limit, so these results are *directional* signals for
 V-JEPA-scale ablation rather than quantitative rankings. The paper closes
-with a priority order for V-JEPA implementation: intervention loss
+with a conjectured priority order for V-JEPA implementation: intervention loss
 first, composition consistency and active masking next, sheaf
 consistency on overlapping clips conditional on the H4 boundary,
 bisimulation with curriculum tuning, viability head last (or first if
-the downstream is safety-critical). All claims are gated by the
-results in `docs/HYPOTHESIS_RESULTS.md`.
+the downstream is safety-critical). This order is a hypothesis from
+inductive-bias reasoning, not a measured ranking, and it is partly
+contradicted by the toy: H5 places intervention loss first in priority
+yet finds it empirically neutral on the toy (CI [−0.127, +0.125]),
+while the only positive trend on the toy is the viability head, which
+the order places last. The null and negative results are gated by the
+results in `docs/HYPOTHESIS_RESULTS.md`; the priority order is not
+gated by any result and is offered as a conjecture.
 
 ## 1. Reframing
 
@@ -286,9 +298,35 @@ The result does not falsify the augmentations. It establishes that
 the toy is at its detection limit and that bisim specifically needs
 $\lambda$-curriculum work before promotion to scale.
 
-## 6. The typology
+## 6. The typology (a conjecture)
 
-Combining the H1-H5 results with the inductive-bias analysis in §3:
+This section is the one part of the paper that is not a validated
+result. Everything in §5 is a preregistered measurement with a binary
+verdict. The typology below is not. It is a conjecture: a set of
+hypotheses about which augmentation should help at V-JEPA scale,
+derived from inductive-bias reasoning in §3 and only loosely
+constrained by the toy. It is untested at scale, and the priority
+order it proposes is partly contradicted by the toy evidence we do
+have. We state that tension before the table rather than after it.
+
+The H5 disagreement is the central caveat. The priority order below
+ranks the intervention loss first. H5 is the only place in this paper
+where the toy can check that ranking directly, and the toy disagrees:
+the intervention loss is empirically neutral on the toy (mean −0.001,
+CI95 [−0.127, +0.125]), not the strongest augmentation. The only
+augmentation with a positive trend on the toy is the viability head
+(mean +0.033, CI95 [−0.007, +0.098]), which the priority order places
+last. So where the conjecture is checkable, it points the wrong way.
+We do not hide this.
+The ranking rests on the argument that the toy's discrete Bernoulli
+dishworld is the wrong data type for the intervention bias and that a
+variance-limited toy cannot resolve a real effect (§7). That argument
+may be right, but it is an argument, not a measurement, and a reader
+should treat the order as a bet on inductive-bias reasoning that the
+available evidence does not yet support.
+
+With that caveat stated, combining the H1-H5 results with the
+inductive-bias analysis in §3:
 
 | Augmentation | Toy evidence | When to expect it to help at scale |
 |---|---|---|
@@ -299,11 +337,19 @@ Combining the H1-H5 results with the inductive-bias analysis in §3:
 | Sheaf consistency | hurts on categorical (H4) | hurts on discrete regimes; *predicted to help* on continuous overlapping data (V-JEPA clips). Conditional on H4-positive pattern. |
 | Composition consistency | not tested on toy | medium gain on multi-step planning (V-JEPA 2). Calibration of $k$-step rollouts. |
 
-The typology is the actual contribution. It tells a V-JEPA
-implementer:
+The typology is the conjectured contribution: a research agenda, not a
+result. The validated contribution of this paper is the §5 battery of
+null and negative results. The order below is what we would advise a
+V-JEPA implementer to try, offered as a prioritized hypothesis and not
+as a finding. Each entry is a bet whose evidence is inductive-bias
+reasoning, and the first entry is the one the toy actively disagrees
+with:
 
-- **Add intervention loss first.** Highest expected gain. The
-  inductive bias matches.
+- **Add intervention loss first.** Highest *expected* gain on the
+  inductive-bias argument, because the bias matches action-conditioned
+  data. This is the entry the toy contradicts: on dishworld the
+  intervention loss is neutral (H5), so the "first" placement is a
+  conjecture about scale and data type, not a measured ranking.
 - **Add composition consistency second.** Cheap. Improves multi-step
   rollouts.
 - **Try active masking third.** Cheap, with literature precedent.
@@ -316,7 +362,9 @@ implementer:
   which case first.
 
 This replaces the original paper's "loss with five auxiliary terms"
-framing with a priority order over augmentations.
+framing with a conjectured priority order over augmentations. It is a
+hypothesis to be falsified by V-JEPA-scale ablation, not a result this
+paper establishes.
 
 ## 7. What the toy can and cannot show
 
@@ -346,9 +394,10 @@ The paper does not establish that any augmentation beats stock V-JEPA
 at scale. It establishes that the augmentations have well-defined
 mathematical forms, that they are correctly implemented in a NumPy
 toy, that one (viability) shows a positive trend even on a
-variance-limited toy, that one (bisim) needs tuning before scale, and
-that the priority order in §6 is defensible from the available
-evidence.
+variance-limited toy, and that one (bisim) needs tuning before scale.
+It does not establish that the priority order in §6 is correct. That
+order is a conjecture, and on the one ranking the toy can check (H5,
+intervention loss first) the toy disagrees.
 
 The cellular sheaf in `representation/sheaf_toy.py` is the only place
 in the project (and possibly in the JEPA-adjacent literature) where a
@@ -401,7 +450,10 @@ embodied/causal mathematical commitments from the original P-JEPA
 proposal is likely to improve a stock JEPA training recipe. Each
 augmentation has a loss-function form, a PyTorch signature, a
 toy-scale gradient-flow verification, and a preregistered V-JEPA-scale
-evaluation protocol. The priority order in §6 is the contribution.
+evaluation protocol. The priority order in §6 is the conjectured
+contribution, offered as a research agenda; the validated contribution
+is the §5 battery of preregistered null and negative results, one of
+which (H5) partly contradicts that order.
 
 A follow-up paper that runs even one of the augmentations at V-JEPA
 scale on Something-Something V2 or DROID would be the natural sequel.

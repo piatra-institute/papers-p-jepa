@@ -1,14 +1,8 @@
 # P-JEPA
 
-P-JEPA is a paper and executable benchmark suite for a narrow claim about embodied predictive representations: when visually similar situations have different action consequences, an agent should learn local action models, measure when those models fail to agree, and use safe probes to repair the representation before acting.
+JEPA Augmentations from Embodied and Causal Mathematics.
 
-The repository contains:
-
-- `paper/PAPER.md`: the paper source.
-- `simulation/`: exact hidden-regime benchmarks, Meta-World adapters, learned local-section models, and executable claim checks.
-- `docs/`: durable project documentation replacing the exploratory chat log as the source of truth.
-
-`chat.md` is archival context only. The project should be understandable from the paper, this README, `AGENTS.md`, and `docs/`.
+P-JEPA was proposed as a replacement for the homogeneous target embedding of Joint Embedding Predictive Architectures (JEPA): a sheaf-valued predictive state over a stratified interaction space. Its reference implementation computes a posterior-weighted variance in place of a coboundary and never places the sheaf in a training loop. We recast each piece of the proposal's embodied and causal mathematics (intervention prediction, bisimulation, active masking, viability, sheaf consistency, composition consistency) as an auxiliary loss, head, or sampler that plugs into a stock JEPA training loop and can be ablated. Five preregistered hypothesis tests on the dishworld toy and the reference code give the following results. The obstruction gate never fires on any of the five reported suites, so the full P-JEPA agent is numerically identical to a plain value-of-information agent. Value-aware active probing beats entropy probing across 50 seeds (paired bootstrap CI95 [+0.009, +0.017]). A frozen random projection of equal width matches the trained intervention encoder (CI95 [+0.000, +0.0045]). A genuine cellular sheaf reduces coboundary energy tenfold but chooses actions slightly worse than the raw cover (CI95 [−0.005, −0.004]). On a NumPy JEPA with toggleable auxiliary losses, the viability head shows a positive trend (CI95 [−0.007, +0.10]) and bisimulation at weight 0.3 hurts (CI95 [−0.23, −0.03]). The toy is at its variance limit, so these are directional signals. A typology mapping each augmentation to the data structure it suits, and a priority order for V-JEPA-scale ablation, are offered as conjecture; the toy partly contradicts the order, finding the first-ranked intervention loss neutral and the last-ranked viability head the only positive trend.
 
 ## Quick Start
 

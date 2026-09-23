@@ -8,144 +8,46 @@ date: May 2026
 
 ## Abstract
 
-The original P-JEPA proposal claimed to extend Joint Embedding
-Predictive Architectures (JEPA) by replacing the homogeneous target
-embedding with a sheaf-valued predictive state over a stratified
-interaction space. That framing was decorative: the implementation
-computed a posterior-weighted variance in place of a coboundary, and the
-sheaf structure was never wired into a training loop. This revision
-discards the replacement framing and adopts a plug-in framing
-instead. JEPA is treated as the working substrate; each piece of
-embodied or causal mathematics from the original paper is implemented
-as an auxiliary loss, head, or sampler that can be added to a stock
-JEPA training loop and ablated. The paper has two kinds of content,
-and they have very different epistemic status. The validated content
-is a battery of preregistered null and negative results about a bespoke
-toy and the original paper's own unpublished code. The conjectured
-content is a *typology*: a proposed mapping from auxiliary losses to
-the structural assumptions about the data they match, together with a
-priority order for V-JEPA-scale implementation. The typology is not a
-validated finding. It is a research agenda derived from inductive-bias
-reasoning and offered as a set of hypotheses, untested at scale, and
-in tension with the one place the toy can check it (see below). The toy
-evidence (5 preregistered hypothesis tests on dishworld, 8 generated
-JSON artifacts) shows that (i) the obstruction gate in the original
-paper is a no-op on every reported suite, with the "p_jepa_stack"
-agent numerically identical to a plain value-of-information agent;
-(ii) value-aware active probing beats entropy probing with paired
-bootstrap CI [+0.009, +0.017] across 50 deterministic seeds; (iii)
-the trained intervention encoder is matched within CI [+0.000, +0.005]
-by a frozen random projection of equal width; (iv) a real cellular
-sheaf reduces coboundary energy 10× as theory predicts but produces
-*slightly worse* downstream action choice than the raw cover (CI
-[−0.005, −0.004]); (v) on a small NumPy JEPA with the auxiliary losses
-ported as toggleable terms, the viability head shows a positive trend
-(CI [−0.007, +0.10]) while the bisimulation regularizer at the chosen
-weight is mis-calibrated and hurts (CI [−0.23, −0.03]). The toy is at
-its variance limit, so these results are *directional* signals for
-V-JEPA-scale ablation rather than quantitative rankings. The paper closes
-with a conjectured priority order for V-JEPA implementation: intervention loss
-first, composition consistency and active masking next, sheaf
-consistency on overlapping clips conditional on the H4 boundary,
-bisimulation with curriculum tuning, viability head last (or first if
-the downstream is safety-critical). This order is a hypothesis from
-inductive-bias reasoning, not a measured ranking, and it is partly
-contradicted by the toy: H5 places intervention loss first in priority
-yet finds it empirically neutral on the toy (CI [−0.127, +0.125]),
-while the only positive trend on the toy is the viability head, which
-the order places last. The null and negative results are gated by the
-results in `docs/HYPOTHESIS_RESULTS.md`; the priority order is not
-gated by any result and is offered as a conjecture.
+P-JEPA was proposed as a replacement for the homogeneous target embedding of Joint Embedding Predictive Architectures (JEPA): a sheaf-valued predictive state over a stratified interaction space. Its reference implementation computes a posterior-weighted variance in place of a coboundary and never places the sheaf in a training loop. We recast each piece of the proposal's embodied and causal mathematics (intervention prediction, bisimulation, active masking, viability, sheaf consistency, composition consistency) as an auxiliary loss, head, or sampler that plugs into a stock JEPA training loop and can be ablated. Five preregistered hypothesis tests on the dishworld toy and the reference code give the following results. The obstruction gate never fires on any of the five reported suites, so the full P-JEPA agent is numerically identical to a plain value-of-information agent. Value-aware active probing beats entropy probing across 50 seeds (paired bootstrap CI95 [+0.009, +0.017]). A frozen random projection of equal width matches the trained intervention encoder (CI95 [+0.000, +0.0045]). A genuine cellular sheaf reduces coboundary energy tenfold but chooses actions slightly worse than the raw cover (CI95 [−0.005, −0.004]). On a NumPy JEPA with toggleable auxiliary losses, the viability head shows a positive trend (CI95 [−0.007, +0.10]) and bisimulation at weight 0.3 hurts (CI95 [−0.23, −0.03]). The toy is at its variance limit, so these are directional signals. A typology mapping each augmentation to the data structure it suits, and a priority order for V-JEPA-scale ablation, are offered as conjecture; the toy partly contradicts the order, finding the first-ranked intervention loss neutral and the last-ranked viability head the only positive trend.
 
-## 1. Reframing
 
-The 2026 version of this paper attempted to introduce a new
-architecture: a sheaf of predictive affordance models on a stratified
-interaction space, trained jointly with intervention, viability, and
-composition objectives. The architecture was named P-JEPA.
+## 1. Introduction
 
-That paper does not exist as an implementation. The reasons are
-documented at length in `docs/CRITIQUE.md` and tested in
-`docs/HYPOTHESIS_RESULTS.md`. The short version is that the paper's
-mathematical objects (sheaves, coboundaries, cohomology, viability
-kernels) are sound, but the simulation implements only a scalar
-posterior-weighted variance and a finite-state value-of-information
-solver. There is no real cellular sheaf in the original code, no
-JEPA encoder, and no comparison against any version of JEPA. The
-paper proposes a replacement for an architecture it never benchmarks.
+Joint Embedding Predictive Architectures learn representations by predicting the embedding of a masked target from the embedding of a context (LeCun, 2022; Assran et al., 2023; Bardes et al., 2024). P-JEPA was proposed as a new architecture in this family: a sheaf of predictive affordance models on a stratified interaction space, trained jointly with intervention, viability, and composition objectives. The mathematical objects involved (sheaves, coboundaries, cohomology, viability kernels) are sound. The reference implementation, however, contains a scalar posterior-weighted variance and a finite-state value-of-information solver, with no cellular sheaf, no JEPA encoder, and no comparison against any JEPA variant. A detailed critique is kept in `docs/CRITIQUE.md`, and the tests that settle its main points are reported in `docs/HYPOTHESIS_RESULTS.md`.
 
-This revision adopts the plug-in framing instead. JEPA is the
-substrate. Each piece of mathematics from the original paper becomes
-an auxiliary loss or head added to a stock JEPA training loop, and is
-evaluated by ablation. The paper's contribution shifts from "a new
-architecture" to "a typology of when each augmentation matches JEPA's
-data and when it doesn't."
+We adopt a plug-in formulation. JEPA is the substrate, and each piece of mathematics from the proposal becomes an auxiliary loss or head added to a stock JEPA training loop and evaluated by ablation. The contribution is correspondingly narrower: a typology of when each augmentation matches the structure of the data, together with a set of preregistered tests on a toy and on the reference code. The narrower claim can be tested experimentally, which the architectural claim could not.
 
-This is a strictly weaker claim than the original. It is also one
-that can be defended with experiments.
+The Meta-World adapter and the formal contract interface of the original proposal remain as supporting material in `docs/ARCHITECTURE.md` and the simulation code.
 
-The argument has four parts:
 
-1. **§2-3 The mathematics, restated as loss terms.** Each commitment
-   from the original paper is given its loss-function form
-   and its PyTorch signature, suitable for adding to a V-JEPA
-   reference implementation.
-2. **§4 The toy.** A small NumPy JEPA on dishworld with each loss as
-   a toggleable term, used to verify gradient flow and produce
-   directional evidence at low cost.
-3. **§5 The hypothesis tests.** Five preregistered experiments
-   (H1-H5) on the existing code and the new toy, with paired bootstrap
-   CIs and binary verdicts.
-4. **§6 The typology.** Which losses match which inductive biases, and
-   what the toy and existing-code results imply about a real V-JEPA
-   evaluation.
+## 2. Intervention-Sufficient Representations
 
-§7-8 are limits and reproducibility. The original §10 (Meta-World
-adapter) and §11 (formal contract interface) remain as supporting
-material in `docs/ARCHITECTURE.md` and the unchanged simulation code.
-
-## 2. P-representations, briefly
-
-We retain the core definition from the original paper because it
-remains a clean statement of the criterion: a representation is
-*intervention-sufficient* at tolerance $\varepsilon$ if it preserves
-the information needed to predict the outcomes of arbitrary
-admissible actions:
+The representational criterion of the proposal is retained. A representation is *intervention-sufficient* at tolerance $\varepsilon$ if it preserves the information needed to predict the outcomes of arbitrary admissible actions:
 
 $$
 D\bigl(\mathbb{P}_A(o_{t+1:t+k}, v_{t+1:t+k} \mid h_t, do(\alpha)),\,
        \mathbb{P}_A(o_{t+1:t+k}, v_{t+1:t+k} \mid s_t, do(\alpha))\bigr) \leq \varepsilon.
 $$
 
-This is the predictive-state criterion of Littman & Sutton (2001)
-extended with viability $v$ and intervention semantics. The
-*operational* content for a JEPA augmentation is: $s_t$ must support
-predictions $\hat y_\alpha$ for each $\alpha$ in a chosen test bank.
-This is the intervention loss (§3A below). Everything else in the
-original paper's "mathematical stack" can be read as a *secondary
-constraint* on the representation: bisimulation, sheaf consistency,
-viability, composition, active perception each add a different
-inductive bias on top of the predictive-state core.
+The criterion is the predictive-state criterion of Littman & Sutton (2001) extended with viability $v$ and interventional semantics (Pearl, 2009). For a JEPA augmentation its operational content is that $s_t$ must support predictions $\hat y_\alpha$ for each $\alpha$ in a chosen test bank, which is the intervention loss of Section 3. The remaining components of the proposal's mathematical stack (bisimulation, sheaf consistency, viability, composition, active perception) act as *secondary constraints* on the representation, each adding a different inductive bias to the predictive-state core.
 
-The original paper presented these as a single integrated loss with
-five auxiliary terms. This revision treats them as five separable
-augmentations, each with its own ablation.
+The proposal combined these into a single objective with five auxiliary terms. Here they are five separable augmentations, each with its own ablation.
 
-## 3. The augmentation table
 
-Each augmentation is a loss or sampler that plugs into a stock JEPA
-training step. The full PyTorch signatures, where each one plugs in,
-and the proposed real evaluations are in `docs/JEPA_AUGMENTATIONS.md`.
-This section gives only the names and the loss equations.
+## 3. Augmentations as Loss Terms
+
+Each augmentation is a loss or sampler that plugs into a stock JEPA training step. The full PyTorch signatures, their insertion points, and the proposed large-scale evaluations are in `docs/JEPA_AUGMENTATIONS.md`; the table below gives the names and loss equations.
 
 | Name | Loss / sampler | Inductive bias | Where it matters most |
-|---|---|---|---|
+|--------|--------------------|----------|----------|
 | Intervention | $\mathcal{L}_{do} = \mathbb{E}\|h_\psi(f_\theta(x), e(\alpha)) - y_\alpha\|^2$ | encoder must predict action outcomes | action-conditioned downstream tasks |
 | Bisimulation | $\mathcal{L}_{\text{bisim}} = \mathbb{E}\bigl\|\|f(x)-f(x')\| - \mathbb{E}_\alpha D(\hat y_{x,\alpha}, \hat y_{x',\alpha})\bigr\|$ | latent metric anchored to outcome metric | tasks where visual similarity disagrees with action similarity |
 | Active masking | $m^* = \arg\max_m \mathrm{Var}_k[g_\phi^{(k)}(f_\theta(x \odot m), m)]$ | hard-example mining via ensemble disagreement | sample-efficient pretraining |
 | Viability head | $\mathcal{L}_{\text{viab}} = \mathbb{E}(\sigma(b_\psi(f(x), e(\alpha))) - u)^2$ | latent linearly separates unsafe states | safety-critical downstream policies |
 | Sheaf consistency (on overlap) | $\mathcal{L}_{\text{glue}} = \mathbb{E}_{\Omega_{ij}}\|\rho_{i,ij}(f(x_i)) - \rho_{j,ij}(f(x_j))\|^2$ | adjacent clips encode coherently | video pretraining with overlapping windows |
 | Composition consistency | $\mathcal{L}_{\text{comp}} = \mathbb{E}\|g(g(s, \alpha_1), \alpha_2) - g(s, \alpha_1 \circ \alpha_2)\|^2$ | predictor is associative under action composition | multi-step latent planning |
+
+The bisimulation term follows the bisimulation-metric literature (Ferns et al., 2011; Zhang et al., 2021). The viability head is a learned analogue of a control barrier function (Ames et al., 2019). The sheaf-consistency term penalizes the coboundary of a cellular sheaf on the overlap graph (Hansen & Ghrist, 2019; Robinson, 2017). The intervention loss targets the causal confusion that arises when a representation encodes correlates of outcomes instead of their causes (de Haan et al., 2019).
 
 The full loss is a weighted sum:
 
@@ -158,257 +60,112 @@ $$
 + \lambda_{\text{comp}}\,\mathcal{L}_{\text{comp}}.
 $$
 
-Active masking is absent from this sum because it acts as a sampler
-rather than a loss. The $\lambda$ values are augmentation-specific tuning knobs.
+Active masking is absent from the sum because it acts as a sampler. The $\lambda$ values are augmentation-specific weights. The proposal wrote this sum as a single objective $\mathcal{L}_{P\text{-JEPA}}$; treating the terms as separable allows ablation, by setting individual $\lambda$ values to zero and measuring downstream performance.
 
-The original paper presented this as $\mathcal{L}_{P\text{-JEPA}}$,
-a single objective. Treating the terms as separable augmentations is
-what allows ablation: switching individual $\lambda$ values to zero
-and measuring downstream performance.
 
-## 4. The dishworld JEPA toy
+## 4. NumPy JEPA Toy on Dishworld
 
-`simulation/pjepa_sim/jepa_toy/` implements a small NumPy JEPA on
-dishworld contexts (sensor + visual features, regime hidden state).
-Two-layer MLP encoder, EMA target encoder, mask predictor, optional
-outcome predictor (for intervention loss), optional viability head.
-Adam optimizer and manual backprop throughout. The model trains in
-seconds per seed.
+`simulation/pjepa_sim/jepa_toy/` implements a small NumPy JEPA on dishworld contexts: 6-dimensional inputs (four sensor features and a two-dimensional one-hot visual feature) generated from four hidden regimes. The model has a two-layer MLP encoder, an EMA target encoder, a mask predictor, an optional outcome predictor for the intervention loss, and an optional viability head, trained with Adam and manual backpropagation. Each seed trains in seconds.
 
-The toy exists for two reasons:
+The toy serves two purposes. The first is gradient verification: each auxiliary loss can be enabled and its loss curve checked for monotonic decrease, a correctness check before any V-JEPA-scale port. The second is directional evidence. The downstream evaluation is the regime-cluster and action-utility evaluation used throughout the simulation. A toy advantage suggests that an effect may reproduce at scale, and a toy disadvantage suggests that the augmentation's inductive bias may not suit this data type. Both readings are weak because the toy is at its variance limit, but they cost far less than GPU time.
 
-1. **Gradient verification.** Each auxiliary loss can be enabled and
-   its loss curve checked for monotonic decrease. This is a
-   correctness check on the implementation before any V-JEPA-scale
-   port.
-2. **Directional evidence.** The toy's downstream evaluation is the
-   same regime-cluster + action-utility evaluation used by the rest
-   of the simulation. A toy advantage suggests scale will likely
-   reproduce; a toy disadvantage suggests the augmentation's
-   inductive bias may not match this data type. Both readings are
-   weak, since the toy is at its variance limit, but they cost far less
-   than GPU time.
+A V-JEPA result requires PyTorch, a video dataset, matched compute, and frozen-feature linear probing against I-JEPA and V-JEPA baselines, none of which exists in this repository. The toy connects the mathematical form of each augmentation to a specification that can be tested at scale.
 
-The toy is not a real V-JEPA result. A V-JEPA result requires
-PyTorch, a real video dataset, matched compute, and frozen-feature
-linear probing against I-JEPA / V-JEPA baselines. None of these
-exists in this repository. The toy is the bridge from "the
-augmentation has a mathematical form" to "the augmentation
-is testable at scale."
 
-## 5. Preregistered hypothesis tests
+## 5. Preregistered Hypothesis Tests
 
-Each hypothesis was registered with a binary pass/fail criterion
-before running. Results land in
-`docs/HYPOTHESIS_RESULTS.md` and the JSON artifacts in
-`simulation/output/experiments/`. The five verdicts:
+Each hypothesis was registered with a binary pass/fail criterion before the experiment ran. Results are recorded in `docs/HYPOTHESIS_RESULTS.md`, with JSON artifacts in `simulation/output/experiments/`. The five verdicts are summarized below.
 
 | # | Preregistered hypothesis | Verdict | Evidence |
 |---|---|---|---|
 | H1 | the obstruction gate is a no-op | confirmed | the gate never fires; the two agents are bit-identical |
 | H2 | active vs entropy probing is seed noise | rejected | active beats entropy by $+0.0130$, CI95 $[+0.0094, +0.0166]$, 41/50 seeds |
-| H3 | the trained encoder matches a frozen random projection | confirmed | score delta CI95 $[+0.000, +0.005]$ |
-| H4 | the sheaf framing is decorative | confirmed, and strengthened | the glued centres score below scalar, CI95 $[-0.005, -0.004]$ |
+| H3 | the trained encoder matches a frozen random projection | confirmed | score delta CI95 $[+0.000, +0.0045]$ |
+| H4 | the sheaf framing is decorative | criterion failed in the confirming direction | the glued centres score below scalar, CI95 $[-0.005, -0.004]$ |
 | H5 | the JEPA augmentations help on the toy | not supported | no augmentation has a CI95 strictly above zero |
 
-Each verdict is unpacked below.
+### H1: Obstruction Gate
 
-### H1: Obstruction gate is a no-op
+The reference agents `p_jepa_stack` and `active_psr_probe` call the same `_decision_probe_result` function with different `use_obstruction_gate` flags. The gate short-circuits a probe when obstruction falls below `spec.sheaf_threshold`. **Result: PASS.** Across all five suites the initial obstruction (0.15–0.26) lies well above the threshold (0.06), so the gate never fires, and the two agents agree to floating-point precision. The distinction between "the P-JEPA stack" and "the active PSR probe" has no operational content on the reported suites.
 
-The paper's `p_jepa_stack` agent and `active_psr_probe` agent both
-call the same `_decision_probe_result` function with different
-`use_obstruction_gate` flags. The gate short-circuits a probe when
-obstruction falls below `spec.sheaf_threshold`. **Result: PASS**.
-Across all five suites, the initial obstruction (0.15-0.26) is well
-above the threshold (0.06), so the gate never fires; the two agents
-are numerically identical to floating-point precision. The
-distinction in the original paper between "the P-JEPA stack" and
-"the active PSR probe" is operationally vacuous on the reported
-suites.
+### H2: Active Versus Entropy Probing
 
-### H2: Active vs entropy probing is seed noise
+A 5-seed sweep in the proposal reported that value-aware active probing beats entropy probing by 0.005, with one seed favouring entropy. **Result: FAIL** (hypothesis rejected). With 50 seeds and 10000 paired bootstrap resamples, active probing beats entropy probing by a mean of +0.0130, CI95 [+0.0094, +0.0166], with 41 of 50 seeds favouring active probing. The 5-seed sweep had the right sign and too few seeds to resolve it. The claim that value-aware probing beats entropy probing is supported and should be reported with this interval.
 
-The original paper reports a 5-seed sweep where value-aware active
-probing beats entropy probing by 0.005 with one seed favouring
-entropy. **Result: FAIL** (hypothesis rejected). With 50 seeds and
-10000 paired bootstrap resamples, active beats entropy by mean
-+0.0130, CI95 [+0.0094, +0.0166], with 41/50 seeds favouring active.
-The original 5-seed sweep reached the right direction with too few
-seeds to resolve it. The "value-aware probing beats entropy" claim is
-supported and should be reported with this CI.
+### H3: Trained Encoder Versus Frozen Random Projection
 
-### H3: Trained encoder ≈ frozen random projection
+The neural P-representation was claimed to recover regimes through a learned representation. **Result: PASS** (hypothesis confirmed). Across 10 seeds the trained MLP reaches a risk-adjusted score of 0.802 and cluster purity 1.000; a frozen random TinyMLP of identical width reaches 0.800 and 0.994. The paired CI95 on the difference is [+0.000, +0.0045] for score and [+0.000, +0.018] for purity. Clustering of linearly separable Bernoulli sources does the work, and gradient training adds nothing measurable; the mechanism is test-vector clustering, and the "neural" label is decorative.
 
-The "neural P-representation" was claimed to recover regimes via
-learned representation. **Result: PASS** (hypothesis confirmed).
-Across 10 seeds, the trained MLP gets risk-adjusted score 0.802 and
-cluster purity 1.000. A frozen random TinyMLP of identical width
-gets 0.800 and 0.994. Delta CI95 [+0.000, +0.005] for score,
-[+0.000, +0.018] for purity. The work is being done by clustering
-on linearly-separable Bernoulli sources; gradient training adds
-nothing measurable. The "neural" framing is decorative; the mechanism
-is test-vector clustering.
+### H4: Cellular Sheaf Versus Scalar Cover
 
-### H4: Sheaf framing is decorative
+A cellular sheaf is implemented in `simulation/pjepa_sim/representation/sheaf_toy.py`: a learned cover ($K=6$ k-means clusters), a 1-skeleton with 8.95 edges on average, learned linear restriction maps with ridge regularization, the assembled coboundary $\delta_0$, and the sheaf Laplacian $L_0 = \delta_0^\top \delta_0$, with mean $\dim H^0 = 9.85$ and $\dim H^1 = 42.3$ on the 1-skeleton. **Result: FAIL on the preregistered criterion, in the direction that strengthens the hypothesis.** Gluing lowers coboundary energy tenfold (0.354 to 0.0345), so the construction does what the mathematics says it should. The glued centres nevertheless score 0.798 against 0.802 for the scalar cover, with CI95 [−0.005, −0.004] entirely negative. On categorical hidden state the sheaf inductive bias slightly *hurts* downstream action choice. The criterion required a confidence interval containing zero; the interval excludes zero on the harmful side. The natural prediction is that on continuous overlapping data, such as V-JEPA temporal clips, where a global section exists to be recovered, the same mechanism should help (Section 6).
 
-Implemented a real cellular sheaf in
-`simulation/pjepa_sim/representation/sheaf_toy.py`: learned cover
-($K=6$ k-means clusters), 1-skeleton (8.9 edges on average),
-learned linear restriction maps with ridge regularization, assembled
-coboundary $\delta_0$, sheaf Laplacian $L_0 = \delta_0^\top \delta_0$,
-$\dim H^0 \approx 9.8$, $\dim H^1 \approx 42.3$ on the 1-skeleton.
-**Result: FAIL on preregistered criterion in unexpected direction**.
-Coboundary energy drops 10× from gluing (0.354 to 0.034). The math
-works. But the glued centers score 0.798 vs scalar 0.802, with CI95
-[−0.005, −0.004] entirely negative. The sheaf inductive bias
-*hurts* downstream action choice on categorical hidden state. The
-hypothesis is *strengthened* not weakened: the framing is not
-neutral, it's slightly counterproductive on dishworld. The natural
-prediction: on continuous overlapping data (V-JEPA temporal clips),
-where there genuinely is a global section to recover, the same
-mechanism should help. That experiment is in §6.
+### H5: JEPA Augmentations on the Toy
 
-### H5: JEPA augmentations help on the toy
-
-Trained base JEPA + each augmentation (intervention, bisim, active
-masking, viability) + all combined, 12 seeds × 6 variants on
-dishworld. **Result: FAIL** (no augmentation has CI strictly above
-zero). The detailed pattern is more interesting than the binary
-verdict:
+Base JEPA and each augmentation (intervention, bisimulation, active masking, viability), plus all combined, were trained for 12 seeds × 6 variants on dishworld. **Result: FAIL** (no augmentation has a CI strictly above zero). The pattern behind the binary verdict is as follows.
 
 | Variant | Mean score | Mean − base | CI95 |
 |---|---:|---:|---|
 | base JEPA | 0.591 | n/a | n/a |
 | +intervention | 0.590 | −0.001 | [−0.127, +0.125] |
-| +bisim | 0.461 | −0.130 | [−0.231, −0.027] |
+| +bisim | 0.462 | −0.130 | [−0.231, −0.027] |
 | +active masking | 0.585 | −0.006 | [−0.059, +0.048] |
 | +viability | 0.624 | +0.033 | [−0.007, +0.098] |
 | +all | 0.477 | −0.114 | [−0.209, −0.023] |
 
-Three real findings: (i) **bisim at $\lambda = 0.3$ is
-mis-calibrated** and actively hurts (CI excludes zero negatively),
-consistent with the literature warning that bisim needs careful
-curriculum tuning; (ii) **viability shows a positive trend** with CI
-nearly excluding zero, most informative on seeds where base JEPA
-converges to a degenerate latent, where viability "rescues" the
-result; (iii) **intervention and active masking are neutral** at
-this scale. The toy's variance dwarfs the augmentation effect.
+Three findings stand out. Bisimulation at $\lambda = 0.3$ is mis-calibrated and hurts, with a CI that excludes zero on the negative side, consistent with reports that bisimulation objectives need careful curriculum tuning (Zhang et al., 2021). Viability shows a positive trend whose CI nearly excludes zero; its gain comes mostly from seeds on which base JEPA converges to a degenerate latent. Intervention and active masking are neutral at this scale. The seed-to-seed variance of the toy exceeds the augmentation effects.
 
-The result does not falsify the augmentations. It establishes that
-the toy is at its detection limit and that bisim specifically needs
-$\lambda$-curriculum work before promotion to scale.
+These results do not falsify the augmentations. They show that the toy is at its detection limit and that bisimulation needs $\lambda$-curriculum work before it is tried at scale.
 
-## 6. The typology (a conjecture)
 
-This section is the one part of the paper that is not a validated
-result. Everything in §5 is a preregistered measurement with a binary
-verdict. The typology below is not. It is a conjecture: a set of
-hypotheses about which augmentation should help at V-JEPA scale,
-derived from inductive-bias reasoning in §3 and only loosely
-constrained by the toy. It is untested at scale, and the priority
-order it proposes is partly contradicted by the toy evidence we do
-have. We state that tension before the table rather than after it.
+## 6. Conjectured Typology and Priority Order
 
-The H5 disagreement is the central caveat. The priority order below
-ranks the intervention loss first. H5 is the only place in this paper
-where the toy can check that ranking directly, and the toy disagrees:
-the intervention loss is empirically neutral on the toy (mean −0.001,
-CI95 [−0.127, +0.125]), not the strongest augmentation. The only
-augmentation with a positive trend on the toy is the viability head
-(mean +0.033, CI95 [−0.007, +0.098]), which the priority order places
-last. So where the conjecture is checkable, it points the wrong way.
-We do not hide this.
-The ranking rests on the argument that the toy's discrete Bernoulli
-dishworld is the wrong data type for the intervention bias and that a
-variance-limited toy cannot resolve a real effect (§7). That argument
-may be right, but it is an argument, not a measurement, and a reader
-should treat the order as a bet on inductive-bias reasoning that the
-available evidence does not yet support.
+Everything in Section 5 is a preregistered measurement with a binary verdict. The typology in this section is a conjecture: a set of hypotheses about which augmentation should help at V-JEPA scale, derived from the inductive-bias reasoning of Section 3 and only loosely constrained by the toy. It is untested at scale, and the toy evidence partly contradicts the priority order it proposes.
 
-With that caveat stated, combining the H1-H5 results with the
-inductive-bias analysis in §3:
+The H5 disagreement is the central caveat. The priority order ranks the intervention loss first. H5 is the only place where the toy can check that ranking, and there the intervention loss is neutral (mean −0.001, CI95 [−0.127, +0.125]). The only augmentation with a positive trend on the toy is the viability head (mean +0.033, CI95 [−0.007, +0.098]), which the order places last. Where the conjecture can be checked, the evidence points the other way. The ranking rests on two arguments: that the discrete Bernoulli dishworld is the wrong data type for the intervention bias, and that a variance-limited toy cannot resolve a real effect (Section 7). Both are arguments without measurements behind them, and the order should be read as a bet on inductive-bias reasoning that the available evidence does not yet support.
+
+Combining the H1–H5 results with the inductive-bias analysis of Section 3 gives the following typology.
 
 | Augmentation | Toy evidence | When to expect it to help at scale |
 |---|---|---|
-| Intervention loss | neutral on toy (variance-limited) | high gain on action-conditioned video (SSv2, robot rollouts); the inductive bias is well-matched |
+| Intervention loss | neutral on toy (variance-limited) | high gain on action-conditioned video (SSv2, robot rollouts); the inductive bias is well matched |
 | Bisimulation | hurts at $\lambda=0.3$ | medium gain conditional on curriculum tuning and a well-trained intervention head |
-| Active masking | neutral on toy | small-to-medium gain on representation pretraining; adjacent literature suggests ~0.5-1% |
-| Viability head | positive trend (CI ~excludes zero) | high gain for safety-critical downstream; low for plain recognition |
-| Sheaf consistency | hurts on categorical (H4) | hurts on discrete regimes; *predicted to help* on continuous overlapping data (V-JEPA clips). Conditional on H4-positive pattern. |
-| Composition consistency | not tested on toy | medium gain on multi-step planning (V-JEPA 2). Calibration of $k$-step rollouts. |
+| Active masking | neutral on toy | small-to-medium gain on representation pretraining |
+| Viability head | positive trend, CI95 $[-0.007, +0.098]$ | high gain for safety-critical downstream tasks; low for plain recognition |
+| Sheaf consistency | hurts on categorical regimes (H4) | *predicted to help* on continuous overlapping data (V-JEPA clips), conditional on the H4 boundary |
+| Composition consistency | not tested on toy | medium gain on multi-step planning (V-JEPA 2); calibration of $k$-step rollouts |
 
-The typology is the conjectured contribution: a research agenda, not a
-result. The validated contribution of this paper is the §5 battery of
-null and negative results. The order below is what we would advise a
-V-JEPA implementer to try, offered as a prioritized hypothesis and not
-as a finding. Each entry is a bet whose evidence is inductive-bias
-reasoning, and the first entry is the one the toy actively disagrees
-with:
+The order below is the sequence we would advise a V-JEPA implementer to try, as a prioritized hypothesis. Each entry rests on inductive-bias reasoning, and the first is the one the toy contradicts.
 
-- **Add intervention loss first.** Highest *expected* gain on the
-  inductive-bias argument, because the bias matches action-conditioned
-  data. This is the entry the toy contradicts: on dishworld the
-  intervention loss is neutral (H5), so the "first" placement is a
-  conjecture about scale and data type, not a measured ranking.
-- **Add composition consistency second.** Cheap. Improves multi-step
-  rollouts.
-- **Try active masking third.** Cheap, with literature precedent.
-- **Try sheaf consistency on overlapping clips fourth.** Conditional
-  on the H4 boundary: it works on continuous overlapping data and
-  fails on categorical regimes.
-- **Add bisimulation fifth.** Requires a working intervention head
-  first and careful $\lambda$ curriculum.
-- **Add viability last** unless the downstream is safety-critical, in
-  which case first.
+- **Intervention loss first.** It has the highest *expected* gain on the inductive-bias argument, because the bias matches action-conditioned data. On dishworld it is neutral (H5), so the first place is a conjecture about scale and data type.
+- **Composition consistency second.** It is cheap and targets multi-step rollouts.
+- **Active masking third.** It is cheap and has precedent in hard-example mining.
+- **Sheaf consistency on overlapping clips fourth.** This is conditional on the H4 boundary: the term is expected to work on continuous overlapping data and fails on categorical regimes.
+- **Bisimulation fifth.** It requires a working intervention head and a careful $\lambda$ curriculum.
+- **Viability last**, unless the downstream task is safety-critical, in which case first.
 
-This replaces the original paper's "loss with five auxiliary terms"
-framing with a conjectured priority order over augmentations. It is a
-hypothesis to be falsified by V-JEPA-scale ablation, not a result this
-paper establishes.
+V-JEPA-scale ablation can falsify this order; the present evidence does not establish it.
 
-## 7. What the toy can and cannot show
 
-The toy is small. Dishworld has 4 categorical regimes, 11-dim
-contexts, and Bernoulli outcomes. The H5 toy is at its variance limit
-(base JEPA itself ranges 0.44-0.80 across seeds). A toy negative is
-weak evidence against scale gain; a toy positive is weak evidence
-for. §3's PyTorch signatures and `docs/JEPA_AUGMENTATIONS.md`'s
-proposed evaluations exist because the real test is at V-JEPA scale,
-which this repository cannot execute.
+## 7. Limitations
 
-The mathematical objects from the original paper are honestly tested.
-H1 shows the obstruction gate is operationally vacuous. H4 shows the
-sheaf framing is at best decorative and at worst slightly harmful on
-categorical regimes. H3 shows the "neural" framing is decorative.
-H2 confirms the active-probing claim against entropy. H5 gives mixed
-directional signal on the auxiliary losses.
+The toy is small. Dishworld has 4 categorical regimes, 6-dimensional contexts, and Bernoulli outcomes. The H5 toy is at its variance limit: base JEPA alone ranges from 0.44 to 0.80 across seeds. A toy negative is weak evidence against a gain at scale, and a toy positive is weak evidence for one. The PyTorch signatures of Section 3 and the evaluations proposed in `docs/JEPA_AUGMENTATIONS.md` exist because the decisive test is at V-JEPA scale, which this repository cannot run.
 
-The original paper's §9 hidden-regime table, §10 Meta-World adapter,
-and §11 formal contract interface are not falsified by this revision.
-They are reframed: they remain useful as evidence that the *VOI part*
-of the original P-JEPA stack works, tying Bayesian VOI (see
-H1). They say nothing about whether the sheaf or "neural" framings
-work.
+The tests do settle the status of several objects from the proposal. H1 shows that the obstruction gate is operationally vacuous. H4 shows that the sheaf framing is at best decorative and at worst slightly harmful on categorical regimes. H3 shows that the "neural" framing is decorative. H2 confirms the active-probing advantage over entropy probing, and H5 gives mixed directional evidence on the auxiliary losses.
 
-The paper does not establish that any augmentation beats stock V-JEPA
-at scale. It establishes that the augmentations have well-defined
-mathematical forms, that they are correctly implemented in a NumPy
-toy, that one (viability) shows a positive trend even on a
-variance-limited toy, and that one (bisim) needs tuning before scale.
-It does not establish that the priority order in §6 is correct. That
-order is a conjecture, and on the one ranking the toy can check (H5,
-intervention loss first) the toy disagrees.
+The hidden-regime table, the Meta-World adapter, and the formal contract interface of the proposal are left untouched by these tests. They remain evidence that the value-of-information component of the P-JEPA stack works, since H1 shows that the full stack reduces to exact Bayesian value of information, and they bear on neither the sheaf nor the "neural" framing.
 
-The cellular sheaf in `representation/sheaf_toy.py` is the only place
-in the project (and possibly in the JEPA-adjacent literature) where a
-real cellular sheaf (learned cover, learned linear restrictions,
-assembled coboundary, sheaf Laplacian, reported cohomology dimensions)
-is constructed and ablated on a representation-learning task. The
-H4 negative result is therefore a genuine empirical finding about the
-limits of sheaf-style coherence as a representation-learning prior,
-not just an absence of evidence.
+No augmentation is shown to beat stock V-JEPA at scale. The results establish that the augmentations have well-defined mathematical forms and correct NumPy implementations, that one (viability) shows a positive trend even on a variance-limited toy, and that one (bisimulation) needs tuning before scale. The priority order of Section 6 is not established, and on the one ranking the toy can check (H5, intervention loss first) the toy disagrees.
 
-## 8. Reproducibility
+The scope excludes a new architecture and a foundation model. There is no benchmark against I-JEPA, V-JEPA, V-JEPA 2, or any video foundation model, and no learned robot controller, real perception, language grounding, or end-to-end neural sheaf. The cellular sheaf in `representation/sheaf_toy.py` is the only sheaf in the project, and on the one dataset on which it was tested (dishworld) it produced a negative result. That construction has a learned cover, learned linear restrictions, an assembled coboundary, a sheaf Laplacian, and reported cohomology dimensions, and it is ablated on a representation-learning task; the H4 result is therefore an empirical finding about the limits of sheaf-style coherence as a representation-learning prior on categorical data, beyond an absence of evidence.
+
+
+## 8. Conclusion
+
+Each embodied or causal commitment of the P-JEPA proposal has been given a loss-function form, a PyTorch signature, a toy-scale gradient-flow check, and a preregistered V-JEPA-scale evaluation protocol. The validated results are the Section 5 battery: the obstruction gate is inert, value-aware probing beats entropy probing, the trained encoder is matched by a frozen random projection, a genuine cellular sheaf slightly hurts action choice on categorical data, and no auxiliary loss clears zero on the toy, with viability trending positive and bisimulation at the chosen weight harmful. The typology and priority order of Section 6 are a research agenda, which H5 partly contradicts. Running even one augmentation at V-JEPA scale on Something-Something V2 or DROID is the natural next test. The JEPA toy, the hypothesis-test framework, the sheaf construction, and the design specifications needed for it are in the repository.
+
+
+## 9. Reproducibility
 
 All experiments use `uv` and run from `simulation/`:
 
@@ -420,53 +177,11 @@ uv run python -m pjepa_sim.experiments.h4_sheaf_vs_scalar
 uv run python -m pjepa_sim.experiments.h5_jepa_augmentations
 ```
 
-Each writes a JSON artifact to `output/experiments/` and a single
-PASS/FAIL line. The existing local audit
-(`uv run python -m pjepa_sim.cli.verify_all`) continues to pass; the
-new experiments are pure additions to the codebase.
+Each writes a JSON artifact to `output/experiments/` and prints a single PASS/FAIL line. The local audit (`uv run python -m pjepa_sim.cli.verify_all`) continues to pass; the experiments are additions to the codebase.
 
-`docs/HYPOTHESIS_RESULTS.md` is the durable record of which
-hypotheses passed, which failed, and which decisions the results
-imply for future revisions.
-
-`docs/JEPA_AUGMENTATIONS.md` is the PyTorch design document. It
-gives the loss signatures, where each loss plugs into a V-JEPA
-reference implementation, and the success criterion that would
-constitute a real positive result for each augmentation.
-
-## 9. What this paper is not
-
-This paper proposes neither a new architecture nor a foundation
-model. It makes no claim that any auxiliary loss beats V-JEPA at
-scale. It runs no benchmark against I-JEPA, V-JEPA, V-JEPA 2, or any
-video foundation model. It learns no robot controller, no real
-perception, no language grounding, no end-to-end neural sheaf. The
-cellular sheaf construction in `sheaf_toy.py` is the only sheaf in
-the project, and on the only dataset it was tested on (dishworld) it
-produced a negative result.
-
-What this paper *is*: a typology of when each of the
-embodied/causal mathematical commitments from the original P-JEPA
-proposal is likely to improve a stock JEPA training recipe. Each
-augmentation has a loss-function form, a PyTorch signature, a
-toy-scale gradient-flow verification, and a preregistered V-JEPA-scale
-evaluation protocol. The priority order in §6 is the conjectured
-contribution, offered as a research agenda; the validated contribution
-is the §5 battery of preregistered null and negative results, one of
-which (H5) partly contradicts that order.
-
-A follow-up paper that runs even one of the augmentations at V-JEPA
-scale on Something-Something V2 or DROID would be the natural sequel.
-The infrastructure for it (JEPA toy, hypothesis-test framework,
-sheaf construction, design specs) is in this repository.
+`docs/HYPOTHESIS_RESULTS.md` records which hypotheses passed, which failed, and the decisions the results imply. `docs/JEPA_AUGMENTATIONS.md` is the PyTorch design document: it gives the loss signatures, the insertion point of each loss in a V-JEPA reference implementation, and the success criterion that would constitute a positive result for each augmentation.
 
 ## References
-
-The references here are restricted to works that are actually used in
-the augmentation specifications or hypothesis tests. The original
-paper's longer reference list, including forward-dated citations and
-the citation hygiene issues flagged in `docs/CRITIQUE.md`, is being
-audited separately.
 
 - Ames, A. D., Coogan, S., Egerstedt, M., Notomista, G., Sreenath, K., & Tabuada, P. (2019). Control barrier functions: theory and applications. *European Control Conference*.
 - Assran, M. et al. (2023). Self-supervised learning from images with a joint-embedding predictive architecture (I-JEPA). arXiv:2301.08243.

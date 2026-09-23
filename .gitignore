@@ -284,3 +284,7 @@ simulation/data/
 
 # Generated paper artifacts
 paper/PAPER.pdf
+
+# Generated local build records
+*.build.log
+build-manifest.json

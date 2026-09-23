@@ -169,13 +169,13 @@ scalar baseline (raw centers): mean score 0.802
 sheaf-glued centers:           mean score 0.798
 
 sheaf - scalar score CI95: [-0.0050, -0.0036], mean = -0.0043
-sheaf - scalar unsafe CI95: [+0.0018, +0.0025], mean = +0.0021
+sheaf - scalar unsafe CI95: [+0.0000, +0.0000], mean = +0.0000
 ```
 
 The sheaf machinery is real and active:
 
-- mean number of edges in the 1-skeleton: 8.9 (out of K*(K-1)/2 = 15)
-- mean `dim H^0` (harmonic sections): 9.8
+- mean number of edges in the 1-skeleton: 8.95 (out of K*(K-1)/2 = 15)
+- mean `dim H^0` (harmonic sections): 9.85
 - mean `dim H^1` (residual obstructions): 42.3
 - coboundary energy reduction from gluing: 0.354 → 0.0345 (≈ 10×)
 
@@ -250,7 +250,7 @@ per-augmentation pattern is informative.**
 
 base JEPA:        score 0.591 (range 0.44-0.80 across seeds)
 +intervention:    score 0.590, delta -0.001, CI [-0.127, +0.125]   (neutral)
-+bisim:           score 0.461, delta -0.130, CI [-0.231, -0.027]   (HURTS - CI excludes 0 negatively)
++bisim:           score 0.462, delta -0.130, CI [-0.231, -0.027]   (HURTS - CI excludes 0 negatively)
 +active masking:  score 0.585, delta -0.006, CI [-0.059, +0.048]   (neutral, tight)
 +viability:       score 0.624, delta +0.033, CI [-0.007, +0.098]   (positive trend, CI nearly excludes 0)
 +all:             score 0.477, delta -0.114, CI [-0.209, -0.023]   (hurts, driven by bisim)

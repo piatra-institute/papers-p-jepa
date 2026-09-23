@@ -2,7 +2,7 @@
 
 This module exists to give *directional* evidence about which auxiliary
 losses are worth trying at V-JEPA scale. The toy is deliberately small:
-- 11-dim contexts (sensor + visual features) from dishworld
+- 6-dim contexts (4 sensor + 2 one-hot visual features) from dishworld
 - 2-layer MLP encoder, EMA target encoder, 2-layer predictor
 - 4 hidden regimes, 4 direct actions, deterministic seeds
 

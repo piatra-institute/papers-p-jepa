@@ -1,0 +1,135 @@
+[
+ {
+  "id": "ames2019",
+  "families": [
+   "Ames",
+   "Coogan",
+   "Egerstedt",
+   "Notomista",
+   "Sreenath",
+   "Tabuada"
+  ],
+  "authors_text": "Ames, A. D., Coogan, S., Egerstedt, M., Notomista, G., Sreenath, K., & Tabuada, P.",
+  "year": "2019",
+  "status": "VERIFIED-CROSSREF"
+ },
+ {
+  "id": "assran2023",
+  "families": [
+   "Assran"
+  ],
+  "authors_text": "Assran, M. et al.",
+  "year": "2023",
+  "status": "UNVERIFIED"
+ },
+ {
+  "id": "bardes2024",
+  "families": [
+   "Bardes"
+  ],
+  "authors_text": "Bardes, A., et al.",
+  "year": "2024",
+  "status": "UNVERIFIED"
+ },
+ {
+  "id": "dehaan2019",
+  "families": [
+   "Jayaraman",
+   "Levine"
+  ],
+  "authors_text": "de Haan, P., Jayaraman, D., & Levine, S.",
+  "year": "2019",
+  "status": "UNVERIFIED"
+ },
+ {
+  "id": "ferns2011",
+  "families": [
+   "Ferns",
+   "Panangaden",
+   "Precup"
+  ],
+  "authors_text": "Ferns, N., Panangaden, P., & Precup, D.",
+  "year": "2011",
+  "status": "VERIFIED-CROSSREF"
+ },
+ {
+  "id": "friston2010",
+  "families": [
+   "Friston"
+  ],
+  "authors_text": "Friston, K.",
+  "year": "2010",
+  "status": "UNVERIFIED"
+ },
+ {
+  "id": "hansen2019",
+  "families": [
+   "Hansen",
+   "Ghrist"
+  ],
+  "authors_text": "Hansen, J., & Ghrist, R.",
+  "year": "2019",
+  "status": "VERIFIED-CROSSREF"
+ },
+ {
+  "id": "lecun2022",
+  "families": [
+   "LeCun"
+  ],
+  "authors_text": "LeCun, Y.",
+  "year": "2022",
+  "status": "UNVERIFIED"
+ },
+ {
+  "id": "littman2001",
+  "families": [
+   "Littman",
+   "Sutton"
+  ],
+  "authors_text": "Littman, M. L., & Sutton, R. S.",
+  "year": "2001",
+  "status": "UNVERIFIED"
+ },
+ {
+  "id": "pearl2009",
+  "families": [
+   "Pearl"
+  ],
+  "authors_text": "Pearl, J.",
+  "year": "2009",
+  "status": "UNVERIFIED"
+ },
+ {
+  "id": "robinson2017",
+  "families": [
+   "Robinson"
+  ],
+  "authors_text": "Robinson, M.",
+  "year": "2017",
+  "status": "VERIFIED-CROSSREF"
+ },
+ {
+  "id": "ross2011",
+  "families": [
+   "Ross",
+   "Gordon",
+   "Bagnell"
+  ],
+  "authors_text": "Ross, S., Gordon, G. J., & Bagnell, J. A.",
+  "year": "2011",
+  "status": "UNVERIFIED"
+ },
+ {
+  "id": "zhang2021",
+  "families": [
+   "Zhang",
+   "McAllister",
+   "Calandra",
+   "Gal",
+   "Levine"
+  ],
+  "authors_text": "Zhang, A., McAllister, R., Calandra, R., Gal, Y., & Levine, S.",
+  "year": "2021",
+  "status": "UNVERIFIED"
+ }
+]

@@ -13,7 +13,7 @@ P-JEPA was proposed as a replacement for the homogeneous target embedding of Joi
 
 ## 1. Introduction
 
-Joint Embedding Predictive Architectures learn representations by predicting the embedding of a masked target from the embedding of a context (LeCun, 2022; Assran et al., 2023; Bardes et al., 2024). P-JEPA was proposed as a new architecture in this family: a sheaf of predictive affordance models on a stratified interaction space, trained jointly with intervention, viability, and composition objectives. The mathematical objects involved (sheaves, coboundaries, cohomology, viability kernels) are sound. The reference implementation, however, contains a scalar posterior-weighted variance and a finite-state value-of-information solver, with no cellular sheaf, no JEPA encoder, and no comparison against any JEPA variant. A detailed critique is kept in `docs/CRITIQUE.md`, and the tests that settle its main points are reported in `docs/HYPOTHESIS_RESULTS.md`.
+Joint Embedding Predictive Architectures learn representations by predicting the embedding of a masked target from the embedding of a context [@lecun2022; @assran2023; @bardes2024]. P-JEPA was proposed as a new architecture in this family: a sheaf of predictive affordance models on a stratified interaction space, trained jointly with intervention, viability, and composition objectives. The mathematical objects involved (sheaves, coboundaries, cohomology, viability kernels) are sound. The reference implementation, however, contains a scalar posterior-weighted variance and a finite-state value-of-information solver, with no cellular sheaf, no JEPA encoder, and no comparison against any JEPA variant. A detailed critique is kept in `docs/CRITIQUE.md`, and the tests that settle its main points are reported in `docs/HYPOTHESIS_RESULTS.md`.
 
 We adopt a plug-in formulation. JEPA is the substrate, and each piece of mathematics from the proposal becomes an auxiliary loss or head added to a stock JEPA training loop and evaluated by ablation. The contribution is correspondingly narrower: a typology of when each augmentation matches the structure of the data, together with a set of preregistered tests on a toy and on the reference code. The narrower claim can be tested experimentally, which the architectural claim could not.
 
@@ -29,7 +29,7 @@ D\bigl(\mathbb{P}_A(o_{t+1:t+k}, v_{t+1:t+k} \mid h_t, do(\alpha)),\,
        \mathbb{P}_A(o_{t+1:t+k}, v_{t+1:t+k} \mid s_t, do(\alpha))\bigr) \leq \varepsilon.
 $$
 
-The criterion is the predictive-state criterion of Littman & Sutton (2001) extended with viability $v$ and interventional semantics (Pearl, 2009). For a JEPA augmentation its operational content is that $s_t$ must support predictions $\hat y_\alpha$ for each $\alpha$ in a chosen test bank, which is the intervention loss of Section 3. The remaining components of the proposal's mathematical stack (bisimulation, sheaf consistency, viability, composition, active perception) act as *secondary constraints* on the representation, each adding a different inductive bias to the predictive-state core.
+The criterion is the predictive-state criterion of @littman2001 extended with viability $v$ and interventional semantics [@pearl2009]. For a JEPA augmentation its operational content is that $s_t$ must support predictions $\hat y_\alpha$ for each $\alpha$ in a chosen test bank, which is the intervention loss of Section 3. The remaining components of the proposal's mathematical stack (bisimulation, sheaf consistency, viability, composition, active perception) act as *secondary constraints* on the representation, each adding a different inductive bias to the predictive-state core.
 
 The proposal combined these into a single objective with five auxiliary terms. Here they are five separable augmentations, each with its own ablation.
 
@@ -47,7 +47,7 @@ Each augmentation is a loss or sampler that plugs into a stock JEPA training ste
 | Sheaf consistency (on overlap) | $\mathcal{L}_{\text{glue}} = \mathbb{E}_{\Omega_{ij}}\|\rho_{i,ij}(f(x_i)) - \rho_{j,ij}(f(x_j))\|^2$ | adjacent clips encode coherently | video pretraining with overlapping windows |
 | Composition consistency | $\mathcal{L}_{\text{comp}} = \mathbb{E}\|g(g(s, \alpha_1), \alpha_2) - g(s, \alpha_1 \circ \alpha_2)\|^2$ | predictor is associative under action composition | multi-step latent planning |
 
-The bisimulation term follows the bisimulation-metric literature (Ferns et al., 2011; Zhang et al., 2021). The viability head is a learned analogue of a control barrier function (Ames et al., 2019). The sheaf-consistency term penalizes the coboundary of a cellular sheaf on the overlap graph (Hansen & Ghrist, 2019; Robinson, 2017). The intervention loss targets the causal confusion that arises when a representation encodes correlates of outcomes instead of their causes (de Haan et al., 2019).
+The bisimulation term follows the bisimulation-metric literature [@ferns2011; @zhang2021]. The viability head is a learned analogue of a control barrier function [@ames2019]. The sheaf-consistency term penalizes the coboundary of a cellular sheaf on the overlap graph [@hansen2019; @robinson2017]. The intervention loss targets the causal confusion that arises when a representation encodes correlates of outcomes instead of their causes [@dehaan2019].
 
 The full loss is a weighted sum:
 
@@ -107,13 +107,13 @@ Base JEPA and each augmentation (intervention, bisimulation, active masking, via
 | Variant | Mean score | Mean − base | CI95 |
 |---|---:|---:|---|
 | base JEPA | 0.591 | n/a | n/a |
-| +intervention | 0.590 | −0.001 | [−0.127, +0.125] |
-| +bisim | 0.462 | −0.130 | [−0.231, −0.027] |
-| +active masking | 0.585 | −0.006 | [−0.059, +0.048] |
-| +viability | 0.624 | +0.033 | [−0.007, +0.098] |
-| +all | 0.477 | −0.114 | [−0.209, −0.023] |
+| +intervention | 0.590 | −0.001 | [−0.128, +0.123] |
+| +bisim | 0.462 | −0.130 | [−0.232, −0.027] |
+| +active masking | 0.585 | −0.006 | [−0.061, +0.048] |
+| +viability | 0.624 | +0.033 | [−0.007, +0.097] |
+| +all | 0.477 | −0.114 | [−0.209, −0.021] |
 
-Three findings stand out. Bisimulation at $\lambda = 0.3$ is mis-calibrated and hurts, with a CI that excludes zero on the negative side, consistent with reports that bisimulation objectives need careful curriculum tuning (Zhang et al., 2021). Viability shows a positive trend whose CI nearly excludes zero; its gain comes mostly from seeds on which base JEPA converges to a degenerate latent. Intervention and active masking are neutral at this scale. The seed-to-seed variance of the toy exceeds the augmentation effects.
+Three findings stand out. Bisimulation at $\lambda = 0.3$ is mis-calibrated and hurts, with a CI that excludes zero on the negative side, consistent with reports that bisimulation objectives need careful curriculum tuning [@zhang2021]. Viability shows a positive trend whose CI nearly excludes zero; its gain comes mostly from seeds on which base JEPA converges to a degenerate latent. Intervention and active masking are neutral at this scale. The seed-to-seed variance of the toy exceeds the augmentation effects.
 
 These results do not falsify the augmentations. They show that the toy is at its detection limit and that bisimulation needs $\lambda$-curriculum work before it is tried at scale.
 
@@ -122,7 +122,7 @@ These results do not falsify the augmentations. They show that the toy is at its
 
 Everything in Section 5 is a preregistered measurement with a binary verdict. The typology in this section is a conjecture: a set of hypotheses about which augmentation should help at V-JEPA scale, derived from the inductive-bias reasoning of Section 3 and only loosely constrained by the toy. It is untested at scale, and the toy evidence partly contradicts the priority order it proposes.
 
-The H5 disagreement is the central caveat. The priority order ranks the intervention loss first. H5 is the only place where the toy can check that ranking, and there the intervention loss is neutral (mean −0.001, CI95 [−0.127, +0.125]). The only augmentation with a positive trend on the toy is the viability head (mean +0.033, CI95 [−0.007, +0.098]), which the order places last. Where the conjecture can be checked, the evidence points the other way. The ranking rests on two arguments: that the discrete Bernoulli dishworld is the wrong data type for the intervention bias, and that a variance-limited toy cannot resolve a real effect (Section 7). Both are arguments without measurements behind them, and the order should be read as a bet on inductive-bias reasoning that the available evidence does not yet support.
+The H5 disagreement is the central caveat. The priority order ranks the intervention loss first. H5 is the only place where the toy can check that ranking, and there the intervention loss is neutral (mean −0.001, CI95 [−0.128, +0.123]). The only augmentation with a positive trend on the toy is the viability head (mean +0.033, CI95 [−0.007, +0.097]), which the order places last. Where the conjecture can be checked, the evidence points the other way. The ranking rests on two arguments: that the discrete Bernoulli dishworld is the wrong data type for the intervention bias, and that a variance-limited toy cannot resolve a real effect (Section 7). Both are arguments without measurements behind them, and the order should be read as a bet on inductive-bias reasoning that the available evidence does not yet support.
 
 Combining the H1–H5 results with the inductive-bias analysis of Section 3 gives the following typology.
 
@@ -131,7 +131,7 @@ Combining the H1–H5 results with the inductive-bias analysis of Section 3 give
 | Intervention loss | neutral on toy (variance-limited) | high gain on action-conditioned video (SSv2, robot rollouts); the inductive bias is well matched |
 | Bisimulation | hurts at $\lambda=0.3$ | medium gain conditional on curriculum tuning and a well-trained intervention head |
 | Active masking | neutral on toy | small-to-medium gain on representation pretraining |
-| Viability head | positive trend, CI95 $[-0.007, +0.098]$ | high gain for safety-critical downstream tasks; low for plain recognition |
+| Viability head | positive trend, CI95 $[-0.007, +0.097]$ | high gain for safety-critical downstream tasks; low for plain recognition |
 | Sheaf consistency | hurts on categorical regimes (H4) | *predicted to help* on continuous overlapping data (V-JEPA clips), conditional on the H4 boundary |
 | Composition consistency | not tested on toy | medium gain on multi-step planning (V-JEPA 2); calibration of $k$-step rollouts |
 
@@ -182,17 +182,3 @@ Each writes a JSON artifact to `output/experiments/` and prints a single PASS/FA
 `docs/HYPOTHESIS_RESULTS.md` records which hypotheses passed, which failed, and the decisions the results imply. `docs/JEPA_AUGMENTATIONS.md` is the PyTorch design document: it gives the loss signatures, the insertion point of each loss in a V-JEPA reference implementation, and the success criterion that would constitute a positive result for each augmentation.
 
 ## References
-
-- Ames, A. D., Coogan, S., Egerstedt, M., Notomista, G., Sreenath, K., & Tabuada, P. (2019). Control barrier functions: theory and applications. *European Control Conference*.
-- Assran, M. et al. (2023). Self-supervised learning from images with a joint-embedding predictive architecture (I-JEPA). arXiv:2301.08243.
-- Bardes, A., et al. (2024). Revisiting feature prediction for learning visual representations from video (V-JEPA). arXiv:2404.08471.
-- de Haan, P., Jayaraman, D., & Levine, S. (2019). Causal confusion in imitation learning. *NeurIPS*.
-- Ferns, N., Panangaden, P., & Precup, D. (2011). Bisimulation metrics for continuous Markov decision processes. *SIAM Journal on Computing*, 40(6).
-- Friston, K. (2010). The free-energy principle. *Nature Reviews Neuroscience*, 11.
-- Hansen, J., & Ghrist, R. (2019). Toward a spectral theory of cellular sheaves. *Journal of Applied and Computational Topology*, 3.
-- LeCun, Y. (2022). A path towards autonomous machine intelligence. v0.9.2.
-- Littman, M. L., & Sutton, R. S. (2001). Predictive representations of state. *NeurIPS*.
-- Pearl, J. (2009). *Causality*. 2nd edition. Cambridge.
-- Robinson, M. (2017). Sheaves are the canonical data structure for sensor integration. *Information Fusion*, 36.
-- Ross, S., Gordon, G. J., & Bagnell, J. A. (2011). A reduction of imitation learning to no-regret online learning. *AISTATS*.
-- Zhang, A., McAllister, R., Calandra, R., Gal, Y., & Levine, S. (2021). Learning invariant representations for reinforcement learning without reconstruction (deep bisimulation). *ICLR*.

@@ -1,0 +1,766 @@
+schema: 1
+coverage: reviewed
+reviewed_manuscript_sha256: fa084a937e1d558b7d06cf4c9d784ea1997cb88701019c239fcb929e11e51d60
+claims:
+- id: abs-h2-lo
+  kind: computation
+  passage: Value-aware active probing beats entropy probing across 50 seeds (paired bootstrap CI95 [+0.009,
+    +0.017]).
+  evidence:
+    file: simulation/output/experiments/h2_seed_sweep_bootstrap.json
+    run_id: hypotheses
+    pointer: /summary/active_minus_entropy_ci/low
+    reported: '+0.009'
+    decimals: 3
+    units: risk-adjusted score difference, CI95 lower
+    conditions: 50 seeds, 10,000 paired bootstrap resamples
+- id: abs-h2-hi
+  kind: computation
+  passage: Value-aware active probing beats entropy probing across 50 seeds (paired bootstrap CI95 [+0.009,
+    +0.017]).
+  evidence:
+    file: simulation/output/experiments/h2_seed_sweep_bootstrap.json
+    run_id: hypotheses
+    pointer: /summary/active_minus_entropy_ci/high
+    reported: '+0.017'
+    decimals: 3
+    units: risk-adjusted score difference, CI95 upper
+    conditions: 50 seeds, 10,000 paired bootstrap resamples
+- id: abs-h3-hi
+  kind: computation
+  passage: A frozen random projection of equal width matches the trained intervention encoder (CI95 [+0.000,
+    +0.0045]).
+  evidence:
+    file: simulation/output/experiments/h3_frozen_random_baseline.json
+    run_id: hypotheses
+    pointer: /summary/trained_minus_frozen_score_ci/high
+    reported: '+0.0045'
+    decimals: 4
+    units: score difference, CI95 upper
+    conditions: 10 seeds, paired bootstrap
+- id: abs-h4-lo
+  kind: computation
+  passage: A genuine cellular sheaf reduces coboundary energy tenfold but chooses actions slightly worse
+    than the raw cover (CI95 [−0.005, −0.004]).
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/sheaf_minus_scalar_score_ci/low
+    reported: −0.005
+    decimals: 3
+    units: score difference, CI95 lower
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: abs-h4-hi
+  kind: computation
+  passage: A genuine cellular sheaf reduces coboundary energy tenfold but chooses actions slightly worse
+    than the raw cover (CI95 [−0.005, −0.004]).
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/sheaf_minus_scalar_score_ci/high
+    reported: −0.004
+    decimals: 3
+    units: score difference, CI95 upper
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: abs-viab-lo
+  kind: computation
+  passage: On a NumPy JEPA with toggleable auxiliary losses, the viability head shows a positive trend
+    (CI95 [−0.007, +0.10]) and bisimulation at weight 0.3 hurts (CI95 [−0.23, −0.03]).
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+viability/minus_base_ci/low
+    reported: −0.007
+    decimals: 3
+    units: score difference vs base, CI95 lower
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: abs-viab-hi
+  kind: computation
+  passage: On a NumPy JEPA with toggleable auxiliary losses, the viability head shows a positive trend
+    (CI95 [−0.007, +0.10]) and bisimulation at weight 0.3 hurts (CI95 [−0.23, −0.03]).
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+viability/minus_base_ci/high
+    reported: '+0.10'
+    decimals: 2
+    units: score difference vs base, CI95 upper
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: abs-bisim-lo
+  kind: computation
+  passage: On a NumPy JEPA with toggleable auxiliary losses, the viability head shows a positive trend
+    (CI95 [−0.007, +0.10]) and bisimulation at weight 0.3 hurts (CI95 [−0.23, −0.03]).
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+bisim/minus_base_ci/low
+    reported: −0.23
+    decimals: 2
+    units: score difference vs base, CI95 lower
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap; bisimulation weight 0.3
+- id: abs-bisim-hi
+  kind: computation
+  passage: On a NumPy JEPA with toggleable auxiliary losses, the viability head shows a positive trend
+    (CI95 [−0.007, +0.10]) and bisimulation at weight 0.3 hurts (CI95 [−0.23, −0.03]).
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+bisim/minus_base_ci/high
+    reported: −0.03
+    decimals: 2
+    units: score difference vs base, CI95 upper
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap; bisimulation weight 0.3
+- id: t-h2-mean
+  kind: computation
+  passage: '| H2 | active vs entropy probing is seed noise | rejected | active beats entropy by $+0.0130$,
+    CI95 $[+0.0094, +0.0166]$, 41/50 seeds |'
+  evidence:
+    file: simulation/output/experiments/h2_seed_sweep_bootstrap.json
+    run_id: hypotheses
+    pointer: /summary/mean_active_minus_entropy
+    reported: '+0.0130'
+    decimals: 4
+    units: score difference
+    conditions: 50 seeds, 10,000 paired bootstrap resamples
+- id: h1-prior
+  kind: computation
+  passage: '**Result: PASS.** Across all five suites the initial obstruction (0.15–0.26) lies well above
+    the threshold (0.06), so the gate never fires, and the two agents agree to floating-point precision.'
+  evidence:
+    file: simulation/output/experiments/h1_obstruction_gate.json
+    run_id: hypotheses
+    pointer: /per_suite/costly_probe_v0/obstruction_at_policy_prior
+    reported: '0.26'
+    decimals: 2
+    units: obstruction at the policy prior
+    conditions: largest across suites
+- id: h1-prior-min
+  kind: computation
+  passage: '**Result: PASS.** Across all five suites the initial obstruction (0.15–0.26) lies well above
+    the threshold (0.06), so the gate never fires, and the two agents agree to floating-point precision.'
+  evidence:
+    file: simulation/output/experiments/h1_obstruction_gate.json
+    run_id: hypotheses
+    pointer: /per_suite/miscalibrated_sections_v0/obstruction_at_policy_prior
+    reported: '0.15'
+    decimals: 2
+    units: obstruction at the policy prior
+    conditions: smallest across suites
+- id: h1-thr
+  kind: computation
+  passage: '**Result: PASS.** Across all five suites the initial obstruction (0.15–0.26) lies well above
+    the threshold (0.06), so the gate never fires, and the two agents agree to floating-point precision.'
+  evidence:
+    file: simulation/output/experiments/h1_obstruction_gate.json
+    run_id: hypotheses
+    pointer: /per_suite/costly_probe_v0/sheaf_threshold
+    reported: '0.06'
+    decimals: 2
+    units: gate threshold
+    conditions: configured spec.sheaf_threshold
+- id: h2-mean
+  kind: computation
+  passage: With 50 seeds and 10000 paired bootstrap resamples, active probing beats entropy probing by
+    a mean of +0.0130, CI95 [+0.0094, +0.0166], with 41 of 50 seeds favouring active probing.
+  evidence:
+    file: simulation/output/experiments/h2_seed_sweep_bootstrap.json
+    run_id: hypotheses
+    pointer: /summary/mean_active_minus_entropy
+    reported: '+0.0130'
+    decimals: 4
+    units: score difference
+    conditions: 50 seeds, 10,000 paired bootstrap resamples
+- id: h2-lo
+  kind: computation
+  passage: With 50 seeds and 10000 paired bootstrap resamples, active probing beats entropy probing by
+    a mean of +0.0130, CI95 [+0.0094, +0.0166], with 41 of 50 seeds favouring active probing.
+  evidence:
+    file: simulation/output/experiments/h2_seed_sweep_bootstrap.json
+    run_id: hypotheses
+    pointer: /summary/active_minus_entropy_ci/low
+    reported: '+0.0094'
+    decimals: 4
+    units: CI95 lower
+    conditions: 50 seeds, 10,000 paired bootstrap resamples
+- id: h2-hi
+  kind: computation
+  passage: With 50 seeds and 10000 paired bootstrap resamples, active probing beats entropy probing by
+    a mean of +0.0130, CI95 [+0.0094, +0.0166], with 41 of 50 seeds favouring active probing.
+  evidence:
+    file: simulation/output/experiments/h2_seed_sweep_bootstrap.json
+    run_id: hypotheses
+    pointer: /summary/active_minus_entropy_ci/high
+    reported: '+0.0166'
+    decimals: 4
+    units: CI95 upper
+    conditions: 50 seeds, 10,000 paired bootstrap resamples
+- id: h2-wins
+  kind: computation
+  passage: With 50 seeds and 10000 paired bootstrap resamples, active probing beats entropy probing by
+    a mean of +0.0130, CI95 [+0.0094, +0.0166], with 41 of 50 seeds favouring active probing.
+  evidence:
+    file: simulation/output/experiments/h2_seed_sweep_bootstrap.json
+    run_id: hypotheses
+    pointer: /summary/n_seeds_active_wins_vs_entropy
+    reported: '41'
+    decimals: 0
+    units: seeds favouring active probing
+    conditions: 50 seeds, 10,000 paired bootstrap resamples
+- id: h3-trained
+  kind: computation
+  passage: Across 10 seeds the trained MLP reaches a risk-adjusted score of 0.802 and cluster purity 1.000;
+    a frozen random TinyMLP of identical width reaches 0.800 and 0.994.
+  evidence:
+    file: simulation/output/experiments/h3_frozen_random_baseline.json
+    run_id: hypotheses
+    pointer: /summary/mean_trained_score
+    reported: '0.802'
+    decimals: 3
+    units: risk-adjusted score
+    conditions: 10 seeds, paired bootstrap
+- id: h3-trained-pur
+  kind: computation
+  passage: Across 10 seeds the trained MLP reaches a risk-adjusted score of 0.802 and cluster purity 1.000;
+    a frozen random TinyMLP of identical width reaches 0.800 and 0.994.
+  evidence:
+    file: simulation/output/experiments/h3_frozen_random_baseline.json
+    run_id: hypotheses
+    pointer: /summary/mean_trained_purity
+    reported: '1.000'
+    decimals: 3
+    units: cluster purity
+    conditions: 10 seeds, paired bootstrap
+- id: h3-frozen
+  kind: computation
+  passage: Across 10 seeds the trained MLP reaches a risk-adjusted score of 0.802 and cluster purity 1.000;
+    a frozen random TinyMLP of identical width reaches 0.800 and 0.994.
+  evidence:
+    file: simulation/output/experiments/h3_frozen_random_baseline.json
+    run_id: hypotheses
+    pointer: /summary/mean_frozen_random_score
+    reported: '0.800'
+    decimals: 3
+    units: risk-adjusted score
+    conditions: 10 seeds, paired bootstrap
+- id: h3-frozen-pur
+  kind: computation
+  passage: Across 10 seeds the trained MLP reaches a risk-adjusted score of 0.802 and cluster purity 1.000;
+    a frozen random TinyMLP of identical width reaches 0.800 and 0.994.
+  evidence:
+    file: simulation/output/experiments/h3_frozen_random_baseline.json
+    run_id: hypotheses
+    pointer: /summary/mean_frozen_random_purity
+    reported: '0.994'
+    decimals: 3
+    units: cluster purity
+    conditions: 10 seeds, paired bootstrap
+- id: h3-ci-score
+  kind: computation
+  passage: The paired CI95 on the difference is [+0.000, +0.0045] for score and [+0.000, +0.018] for purity.
+  evidence:
+    file: simulation/output/experiments/h3_frozen_random_baseline.json
+    run_id: hypotheses
+    pointer: /summary/trained_minus_frozen_score_ci/high
+    reported: '+0.0045'
+    decimals: 4
+    units: CI95 upper
+    conditions: 10 seeds, paired bootstrap
+- id: h3-ci-pur
+  kind: computation
+  passage: The paired CI95 on the difference is [+0.000, +0.0045] for score and [+0.000, +0.018] for purity.
+  evidence:
+    file: simulation/output/experiments/h3_frozen_random_baseline.json
+    run_id: hypotheses
+    pointer: /summary/trained_minus_frozen_purity_ci/high
+    reported: '+0.018'
+    decimals: 3
+    units: CI95 upper
+    conditions: 10 seeds, paired bootstrap
+- id: h4-edges
+  kind: computation
+  passage: 'A cellular sheaf is implemented in `simulation/pjepa_sim/representation/sheaf_toy.py`: a learned
+    cover ($K=6$ k-means clusters), a 1-skeleton with 8.95 edges on average, learned linear restriction
+    maps with ridge regularization, the assembled coboundary $\delta_0$, and the sheaf Laplacian $L_0
+    = \delta_0^\top \delta_0$, with mean $\dim H^0 = 9.85$ and $\dim H^1 = 42.3$ on the 1-skeleton.'
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/mean_n_edges
+    reported: '8.95'
+    decimals: 2
+    units: edges on average
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h4-h0
+  kind: computation
+  passage: 'A cellular sheaf is implemented in `simulation/pjepa_sim/representation/sheaf_toy.py`: a learned
+    cover ($K=6$ k-means clusters), a 1-skeleton with 8.95 edges on average, learned linear restriction
+    maps with ridge regularization, the assembled coboundary $\delta_0$, and the sheaf Laplacian $L_0
+    = \delta_0^\top \delta_0$, with mean $\dim H^0 = 9.85$ and $\dim H^1 = 42.3$ on the 1-skeleton.'
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/mean_dim_h0
+    reported: '9.85'
+    decimals: 2
+    units: mean dim H^0
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h4-h1
+  kind: computation
+  passage: 'A cellular sheaf is implemented in `simulation/pjepa_sim/representation/sheaf_toy.py`: a learned
+    cover ($K=6$ k-means clusters), a 1-skeleton with 8.95 edges on average, learned linear restriction
+    maps with ridge regularization, the assembled coboundary $\delta_0$, and the sheaf Laplacian $L_0
+    = \delta_0^\top \delta_0$, with mean $\dim H^0 = 9.85$ and $\dim H^1 = 42.3$ on the 1-skeleton.'
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/mean_dim_h1
+    reported: '42.3'
+    decimals: 1
+    units: mean dim H^1
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h4-k
+  kind: computation
+  passage: 'A cellular sheaf is implemented in `simulation/pjepa_sim/representation/sheaf_toy.py`: a learned
+    cover ($K=6$ k-means clusters), a 1-skeleton with 8.95 edges on average, learned linear restriction
+    maps with ridge regularization, the assembled coboundary $\delta_0$, and the sheaf Laplacian $L_0
+    = \delta_0^\top \delta_0$, with mean $\dim H^0 = 9.85$ and $\dim H^1 = 42.3$ on the 1-skeleton.'
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /config/k_clusters
+    reported: '6'
+    decimals: 0
+    units: k-means clusters
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h4-e0
+  kind: computation
+  passage: '**Result: FAIL on the preregistered criterion, in the direction that strengthens the hypothesis.**
+    Gluing lowers coboundary energy tenfold (0.354 to 0.0345), so the construction does what the mathematics
+    says it should.'
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/mean_coboundary_energy_initial
+    reported: '0.354'
+    decimals: 3
+    units: coboundary energy before gluing
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h4-e1
+  kind: computation
+  passage: '**Result: FAIL on the preregistered criterion, in the direction that strengthens the hypothesis.**
+    Gluing lowers coboundary energy tenfold (0.354 to 0.0345), so the construction does what the mathematics
+    says it should.'
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/mean_coboundary_energy_after_glue
+    reported: '0.0345'
+    decimals: 4
+    units: coboundary energy after gluing
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h4-sheaf
+  kind: computation
+  passage: The glued centres nevertheless score 0.798 against 0.802 for the scalar cover, with CI95 [−0.005,
+    −0.004] entirely negative.
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/mean_sheaf_score
+    reported: '0.798'
+    decimals: 3
+    units: risk-adjusted score
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h4-scalar
+  kind: computation
+  passage: The glued centres nevertheless score 0.798 against 0.802 for the scalar cover, with CI95 [−0.005,
+    −0.004] entirely negative.
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/mean_scalar_score
+    reported: '0.802'
+    decimals: 3
+    units: risk-adjusted score
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h4-lo
+  kind: computation
+  passage: The glued centres nevertheless score 0.798 against 0.802 for the scalar cover, with CI95 [−0.005,
+    −0.004] entirely negative.
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/sheaf_minus_scalar_score_ci/low
+    reported: −0.005
+    decimals: 3
+    units: CI95 lower
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h4-hi
+  kind: computation
+  passage: The glued centres nevertheless score 0.798 against 0.802 for the scalar cover, with CI95 [−0.005,
+    −0.004] entirely negative.
+  evidence:
+    file: simulation/output/experiments/h4_sheaf_vs_scalar.json
+    run_id: hypotheses
+    pointer: /summary/sheaf_minus_scalar_score_ci/high
+    reported: −0.004
+    decimals: 3
+    units: CI95 upper
+    conditions: 20 seeds, K = 6 clusters, paired bootstrap
+- id: h5-base
+  kind: computation
+  passage: '| base JEPA | 0.591 | n/a | n/a |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/base_jepa/mean_score
+    reported: '0.591'
+    decimals: 3
+    units: mean score
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-intervention-mean
+  kind: computation
+  passage: '| +intervention | 0.590 | −0.001 | [−0.128, +0.123] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+intervention/mean_score
+    reported: '0.590'
+    decimals: 3
+    units: mean score
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-intervention-delta
+  kind: computation
+  passage: '| +intervention | 0.590 | −0.001 | [−0.128, +0.123] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+intervention/mean_minus_base
+    reported: −0.001
+    decimals: 3
+    units: mean minus base
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-intervention-lo
+  kind: computation
+  passage: '| +intervention | 0.590 | −0.001 | [−0.128, +0.123] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+intervention/minus_base_ci/low
+    reported: −0.128
+    decimals: 3
+    units: CI95 lower
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-intervention-hi
+  kind: computation
+  passage: '| +intervention | 0.590 | −0.001 | [−0.128, +0.123] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+intervention/minus_base_ci/high
+    reported: '+0.123'
+    decimals: 3
+    units: CI95 upper
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-bisim-mean
+  kind: computation
+  passage: '| +bisim | 0.462 | −0.130 | [−0.232, −0.027] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+bisim/mean_score
+    reported: '0.462'
+    decimals: 3
+    units: mean score
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-bisim-delta
+  kind: computation
+  passage: '| +bisim | 0.462 | −0.130 | [−0.232, −0.027] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+bisim/mean_minus_base
+    reported: −0.130
+    decimals: 3
+    units: mean minus base
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-bisim-lo
+  kind: computation
+  passage: '| +bisim | 0.462 | −0.130 | [−0.232, −0.027] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+bisim/minus_base_ci/low
+    reported: −0.232
+    decimals: 3
+    units: CI95 lower
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-bisim-hi
+  kind: computation
+  passage: '| +bisim | 0.462 | −0.130 | [−0.232, −0.027] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+bisim/minus_base_ci/high
+    reported: −0.027
+    decimals: 3
+    units: CI95 upper
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-active_mask-mean
+  kind: computation
+  passage: '| +active masking | 0.585 | −0.006 | [−0.061, +0.048] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+active_mask/mean_score
+    reported: '0.585'
+    decimals: 3
+    units: mean score
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-active_mask-delta
+  kind: computation
+  passage: '| +active masking | 0.585 | −0.006 | [−0.061, +0.048] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+active_mask/mean_minus_base
+    reported: −0.006
+    decimals: 3
+    units: mean minus base
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-active_mask-lo
+  kind: computation
+  passage: '| +active masking | 0.585 | −0.006 | [−0.061, +0.048] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+active_mask/minus_base_ci/low
+    reported: −0.061
+    decimals: 3
+    units: CI95 lower
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-active_mask-hi
+  kind: computation
+  passage: '| +active masking | 0.585 | −0.006 | [−0.061, +0.048] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+active_mask/minus_base_ci/high
+    reported: '+0.048'
+    decimals: 3
+    units: CI95 upper
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-viability-mean
+  kind: computation
+  passage: '| +viability | 0.624 | +0.033 | [−0.007, +0.097] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+viability/mean_score
+    reported: '0.624'
+    decimals: 3
+    units: mean score
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-viability-delta
+  kind: computation
+  passage: '| +viability | 0.624 | +0.033 | [−0.007, +0.097] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+viability/mean_minus_base
+    reported: '+0.033'
+    decimals: 3
+    units: mean minus base
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-viability-lo
+  kind: computation
+  passage: '| +viability | 0.624 | +0.033 | [−0.007, +0.097] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+viability/minus_base_ci/low
+    reported: −0.007
+    decimals: 3
+    units: CI95 lower
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-viability-hi
+  kind: computation
+  passage: '| +viability | 0.624 | +0.033 | [−0.007, +0.097] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+viability/minus_base_ci/high
+    reported: '+0.097'
+    decimals: 3
+    units: CI95 upper
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-all-mean
+  kind: computation
+  passage: '| +all | 0.477 | −0.114 | [−0.209, −0.021] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+all/mean_score
+    reported: '0.477'
+    decimals: 3
+    units: mean score
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-all-delta
+  kind: computation
+  passage: '| +all | 0.477 | −0.114 | [−0.209, −0.021] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+all/mean_minus_base
+    reported: −0.114
+    decimals: 3
+    units: mean minus base
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-all-lo
+  kind: computation
+  passage: '| +all | 0.477 | −0.114 | [−0.209, −0.021] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+all/minus_base_ci/low
+    reported: −0.209
+    decimals: 3
+    units: CI95 lower
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: h5-all-hi
+  kind: computation
+  passage: '| +all | 0.477 | −0.114 | [−0.209, −0.021] |'
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+all/minus_base_ci/high
+    reported: −0.021
+    decimals: 3
+    units: CI95 upper
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: s6-interv
+  kind: computation
+  passage: H5 is the only place where the toy can check that ranking, and there the intervention loss
+    is neutral (mean −0.001, CI95 [−0.128, +0.123]).
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+intervention/mean_minus_base
+    reported: −0.001
+    decimals: 3
+    units: mean minus base
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: s6-viab
+  kind: computation
+  passage: The only augmentation with a positive trend on the toy is the viability head (mean +0.033,
+    CI95 [−0.007, +0.097]), which the order places last.
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+viability/mean_minus_base
+    reported: '+0.033'
+    decimals: 3
+    units: mean minus base
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: s6-viab-hi
+  kind: computation
+  passage: The only augmentation with a positive trend on the toy is the viability head (mean +0.033,
+    CI95 [−0.007, +0.097]), which the order places last.
+  evidence:
+    file: simulation/output/experiments/h5_jepa_augmentations.json
+    run_id: hypotheses
+    pointer: /summary_by_variant/+viability/minus_base_ci/high
+    reported: '+0.097'
+    decimals: 3
+    units: CI95 upper
+    conditions: 12 seeds x 6 variants, 500 epochs, paired bootstrap
+- id: base-range
+  kind: interpretation
+  passage: 'The H5 toy is at its variance limit: base JEPA alone ranges from 0.44 to 0.80 across seeds.'
+  rationale: Minimum and maximum of the 12 base_jepa risk_adjusted_score records in h5_jepa_augmentations.json
+    /all_records (0.4425 and 0.7975); a range over records rather than a stored summary field.
+- id: h1-noop
+  kind: interpretation
+  passage: The distinction between "the P-JEPA stack" and "the active PSR probe" has no operational content
+    on the reported suites.
+  rationale: h1_obstruction_gate.json /max_abs_delta = 0.0 across all suites and metrics.
+- id: h3-decorative
+  kind: interpretation
+  passage: Clustering of linearly separable Bernoulli sources does the work, and gradient training adds
+    nothing measurable; the mechanism is test-vector clustering, and the "neural" label is decorative.
+  rationale: 'Reading of H3: the frozen random projection matches the trained encoder within CI.'
+- id: h4-prediction
+  kind: interpretation
+  passage: The natural prediction is that on continuous overlapping data, such as V-JEPA temporal clips,
+    where a global section exists to be recovered, the same mechanism should help (Section 6).
+  rationale: Untested prediction about V-JEPA-scale clips, labelled as such.
+- id: toy-limit
+  kind: interpretation
+  passage: These results do not falsify the augmentations.
+  rationale: The toy's seed-to-seed variance exceeds the effect sizes (base_jepa std 0.174).
+- id: intervention-sufficient
+  kind: definition
+  passage: 'A representation is *intervention-sufficient* at tolerance $\varepsilon$ if it preserves the
+    information needed to predict the outcomes of arbitrary admissible actions:'
+  rationale: Central representational criterion carried over from the proposal.
+- id: plugin
+  kind: assumption
+  passage: JEPA is the substrate, and each piece of mathematics from the proposal becomes an auxiliary
+    loss or head added to a stock JEPA training loop and evaluated by ablation.
+  rationale: 'Methodological reframing: each augmentation separable and ablatable.'
+- id: bisim-weight
+  kind: assumption
+  passage: Bisimulation at $\lambda = 0.3$ is mis-calibrated and hurts, with a CI that excludes zero on
+    the negative side, consistent with reports that bisimulation objectives need careful curriculum tuning
+    [@zhang2021].
+  rationale: The weight 0.3 is a fixed configuration value, not tuned; the result is conditional on it.
+- id: typology-conjecture
+  kind: normative
+  passage: The order below is the sequence we would advise a V-JEPA implementer to try, as a prioritized
+    hypothesis.
+  rationale: Advisory priority order, explicitly conjectural and partly contradicted by H5.
+- id: hansen-sheaf
+  kind: source
+  passage: The sheaf-consistency term penalizes the coboundary of a cellular sheaf on the overlap graph
+    [@hansen2019; @robinson2017].
+  evidence:
+    citation_id: hansen2019
+    locator: Abstract
+    verified: true
+    verification_note: 'OpenAlex abstract (DOI 10.1007/s41468-019-00038-7): spectral sheaf theory lifting
+      the graph Laplacian to the Hodge Laplacian on a cellular sheaf, relating spectral data to sheaf
+      cohomology.'
+- id: ames-cbf
+  kind: source
+  passage: The viability head is a learned analogue of a control barrier function [@ames2019].
+  evidence:
+    citation_id: ames2019
+    locator: Abstract
+    verified: true
+    verification_note: 'OpenAlex abstract (DOI 10.23919/ECC.2019.8796030): control barrier functions used
+      to verify and enforce safety properties in safety-critical controllers.'
+- id: dehaan-confusion
+  kind: source
+  passage: The intervention loss targets the causal confusion that arises when a representation encodes
+    correlates of outcomes instead of their causes [@dehaan2019].
+  evidence:
+    citation_id: dehaan2019
+    locator: arXiv abstract
+    verified: true
+    verification_note: 'arXiv API abstract (1905.11979): discriminative behavioral-cloning models are
+      non-causal, producing causal misidentification in which access to more information can yield worse
+      performance.'
+- id: vjepa-feature
+  kind: source
+  passage: Joint Embedding Predictive Architectures learn representations by predicting the embedding
+    of a masked target from the embedding of a context [@lecun2022; @assran2023; @bardes2024].
+  evidence:
+    citation_id: assran2023
+    locator: arXiv abstract
+    verified: true
+    verification_note: 'arXiv API abstract (2301.08243): I-JEPA predicts the representations of target
+      blocks from a single context block. Bardes et al. (2404.08471): V-JEPA trained solely with a feature-prediction
+      objective.'
+runs:
+- id: hypotheses
+  required: true
+  record: verification/hypotheses.json

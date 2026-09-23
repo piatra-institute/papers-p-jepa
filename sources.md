@@ -1,0 +1,5 @@
+# Sources
+
+## Structured bibliography (2026-09-23)
+
+The inline reference list was migrated to references.yaml (CSL) and in-text citations to Pandoc [@id] syntax. Four entries were matched in Crossref and carry their DOIs (ames2019, ferns2011, hansen2019, robinson2017). The machine-learning papers were confirmed through the arXiv API and entered by hand with their venues and arXiv links: assran2023 (I-JEPA, CVPR 2023, arXiv:2301.08243), bardes2024 (V-JEPA, arXiv:2404.08471), dehaan2019 (NeurIPS 2019, arXiv:1905.11979; id renamed from jayaraman2019) and zhang2021 (ICLR 2021, arXiv:2006.10742). littman2001 (NIPS 14, pp. 1555–1561), lecun2022 (OpenReview position paper, version 0.9.2) and pearl2009 (Causality, 2nd edition, Cambridge University Press, DOI 10.1017/CBO9780511803161) were entered by hand. The legacy list named every I-JEPA and V-JEPA author only as "et al."; the structured entries list all eight authors of each. Friston (2010) and Ross, Gordon and Bagnell (2011) were never cited in the text and were removed from the bibliography.

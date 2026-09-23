@@ -1,6 +1,6 @@
 {
-  "pdf_sha256": "a0a7d97fd084ee291891bfbc7322f699e74238c1f0125508dd08c5471427e2fe",
-  "page_count": 10,
+  "pdf_sha256": "5e84752385ff462286b64ed78e35e3dc7d83fa14b21c1daa0481d514da6be1e5",
+  "page_count": 11,
   "pages_inspected": [
     1,
     2,
@@ -11,8 +11,9 @@
     7,
     8,
     9,
-    10
+    10,
+    11
   ],
   "all_pages_inspected": true,
-  "notes": "All 10 pages inspected after the prose revision; the augmentation table's loss column overflowed into the next column and was widened; tables, equations, code block and references render cleanly. Metadata-only rebuild: the web blurb in metadata.yaml, a hashed build input, changed, so the PDF was re-rendered (2cf01165504d to 71e42d4f2409); the rendered text is byte-for-byte identical and no page was re-inspected. Metadata-only rebuild: the web blurb in metadata.yaml, a hashed build input, changed, so the PDF was re-rendered (71e42d4f2409 to a0a7d97fd084); the rendered text is byte-for-byte identical and no page was re-inspected."
+  "notes": "All 11 pages inspected after the migration; citations and the citeproc reference list render correctly, no unresolved citations. Metadata-only rebuild: the web blurb in metadata.yaml, a hashed build input, changed, so the PDF was re-rendered (1d08a90268d2 to 5e84752385ff); the rendered text is byte-for-byte identical and no page was re-inspected."
 }

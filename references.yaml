@@ -1,0 +1,200 @@
+# CSL references with stable IDs; cite with Pandoc [@id] syntax.
+# Migrated from the legacy inline bibliography. Entries with a DOI were resolved through doi.org
+# content negotiation (CSL-JSON) and checked for year and title; others were matched in Crossref
+# or entered by hand. Provenance per entry is in sources.md.
+references:
+- id: ames2019
+  type: paper-conference
+  title: 'Control Barrier Functions: Theory and Applications'
+  author:
+  - given: Aaron D.
+    family: Ames
+  - given: Samuel
+    family: Coogan
+  - given: Magnus
+    family: Egerstedt
+  - given: Gennaro
+    family: Notomista
+  - given: Koushil
+    family: Sreenath
+  - given: Paulo
+    family: Tabuada
+  container-title: 18th European Control Conference (ECC)
+  page: 3420-3431
+  publisher: IEEE
+  DOI: 10.23919/ecc.2019.8796030
+  issued:
+    date-parts:
+    - - 2019
+- id: assran2023
+  type: paper-conference
+  title: Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture
+  author:
+  - given: Mahmoud
+    family: Assran
+  - given: Quentin
+    family: Duval
+  - given: Ishan
+    family: Misra
+  - given: Piotr
+    family: Bojanowski
+  - given: Pascal
+    family: Vincent
+  - given: Michael
+    family: Rabbat
+  - given: Yann
+    family: LeCun
+  - given: Nicolas
+    family: Ballas
+  container-title: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)
+  issued:
+    date-parts:
+    - - 2023
+  number: arXiv:2301.08243
+  URL: https://arxiv.org/abs/2301.08243
+- id: bardes2024
+  type: article
+  title: Revisiting Feature Prediction for Learning Visual Representations from Video
+  author:
+  - given: Adrien
+    family: Bardes
+  - given: Quentin
+    family: Garrido
+  - given: Jean
+    family: Ponce
+  - given: Xinlei
+    family: Chen
+  - given: Michael
+    family: Rabbat
+  - given: Yann
+    family: LeCun
+  - given: Mahmoud
+    family: Assran
+  - given: Nicolas
+    family: Ballas
+  genre: Preprint
+  number: arXiv:2404.08471
+  issued:
+    date-parts:
+    - - 2024
+  URL: https://arxiv.org/abs/2404.08471
+- id: dehaan2019
+  type: paper-conference
+  title: Causal Confusion in Imitation Learning
+  author:
+  - given: Pim
+    family: Haan
+    non-dropping-particle: de
+  - given: Dinesh
+    family: Jayaraman
+  - given: Sergey
+    family: Levine
+  container-title: Advances in Neural Information Processing Systems 32 (NeurIPS 2019)
+  issued:
+    date-parts:
+    - - 2019
+  URL: https://arxiv.org/abs/1905.11979
+- id: ferns2011
+  type: article-journal
+  title: Bisimulation Metrics for Continuous Markov Decision Processes
+  author:
+  - given: Norm
+    family: Ferns
+  - given: Prakash
+    family: Panangaden
+  - given: Doina
+    family: Precup
+  container-title: SIAM Journal on Computing
+  volume: '40'
+  issue: '6'
+  page: 1662-1714
+  DOI: 10.1137/10080484x
+  issued:
+    date-parts:
+    - - 2011
+- id: hansen2019
+  type: article-journal
+  title: Toward a spectral theory of cellular sheaves
+  author:
+  - given: Jakob
+    family: Hansen
+  - given: Robert
+    family: Ghrist
+  container-title: Journal of Applied and Computational Topology
+  volume: '3'
+  issue: '4'
+  page: 315-358
+  DOI: 10.1007/s41468-019-00038-7
+  issued:
+    date-parts:
+    - - 2019
+- id: lecun2022
+  type: manuscript
+  title: A Path Towards Autonomous Machine Intelligence
+  author:
+  - given: Yann
+    family: LeCun
+  genre: Position paper, version 0.9.2
+  publisher: OpenReview
+  issued:
+    date-parts:
+    - - 2022
+  URL: https://openreview.net/forum?id=BZ5a1r-kVsf
+- id: littman2001
+  type: paper-conference
+  title: Predictive Representations of State
+  author:
+  - given: Michael L.
+    family: Littman
+  - given: Richard S.
+    family: Sutton
+  container-title: Advances in Neural Information Processing Systems 14 (NIPS 2001)
+  page: 1555-1561
+  issued:
+    date-parts:
+    - - 2001
+- id: pearl2009
+  type: book
+  title: 'Causality: Models, Reasoning, and Inference'
+  author:
+  - given: Judea
+    family: Pearl
+  edition: '2'
+  publisher: Cambridge University Press
+  publisher-place: Cambridge
+  issued:
+    date-parts:
+    - - 2009
+  DOI: 10.1017/CBO9780511803161
+- id: robinson2017
+  type: article-journal
+  title: Sheaves are the canonical data structure for sensor integration
+  author:
+  - given: Michael
+    family: Robinson
+  container-title: Information Fusion
+  volume: '36'
+  page: 208-224
+  DOI: 10.1016/j.inffus.2016.12.002
+  issued:
+    date-parts:
+    - - 2017
+- id: zhang2021
+  type: paper-conference
+  title: Learning Invariant Representations for Reinforcement Learning without Reconstruction
+  author:
+  - given: Amy
+    family: Zhang
+  - given: Rowan
+    family: McAllister
+  - given: Roberto
+    family: Calandra
+  - given: Yarin
+    family: Gal
+  - given: Sergey
+    family: Levine
+  container-title: International Conference on Learning Representations (ICLR)
+  issued:
+    date-parts:
+    - - 2021
+  URL: https://arxiv.org/abs/2006.10742

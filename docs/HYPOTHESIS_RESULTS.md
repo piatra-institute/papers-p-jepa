@@ -249,11 +249,11 @@ per-augmentation pattern is informative.**
 12 seeds, 500 epochs each, 10000 paired bootstrap resamples
 
 base JEPA:        score 0.591 (range 0.44-0.80 across seeds)
-+intervention:    score 0.590, delta -0.001, CI [-0.127, +0.125]   (neutral)
-+bisim:           score 0.462, delta -0.130, CI [-0.231, -0.027]   (HURTS - CI excludes 0 negatively)
-+active masking:  score 0.585, delta -0.006, CI [-0.059, +0.048]   (neutral, tight)
-+viability:       score 0.624, delta +0.033, CI [-0.007, +0.098]   (positive trend, CI nearly excludes 0)
-+all:             score 0.477, delta -0.114, CI [-0.209, -0.023]   (hurts, driven by bisim)
++intervention:    score 0.590, delta -0.001, CI [-0.128, +0.123]   (neutral)
++bisim:           score 0.462, delta -0.130, CI [-0.232, -0.027]   (HURTS - CI excludes 0 negatively)
++active masking:  score 0.585, delta -0.006, CI [-0.061, +0.048]   (neutral, tight)
++viability:       score 0.624, delta +0.033, CI [-0.007, +0.097]   (positive trend, CI nearly excludes 0)
++all:             score 0.477, delta -0.114, CI [-0.209, -0.021]   (hurts, driven by bisim)
 ```
 
 **Three real findings inside the FAIL verdict:**

@@ -3,6 +3,17 @@
 Dated log of editorial passes and verification runs. Newest first.
 (P-JEPA's deeper records live in `docs/CRITIQUE.md`, `docs/HYPOTHESIS_RESULTS.md`.)
 
+## 2026-09-23 — structured-evidence migration
+
+Structured-evidence migration (references and claims).
+- references.yaml: 11 CSL entries. 4 matched in Crossref with DOIs (ames2019, ferns2011, hansen2019, robinson2017); assran2023, bardes2024, dehaan2019 (renamed from jayaraman2019) and zhang2021 confirmed through the arXiv API and entered by hand with venues and full author lists; littman2001, lecun2022 and pearl2009 (DOI 10.1017/CBO9780511803161) entered by hand. friston2010 and ross2011 were never cited and were removed. sources.md created with the provenance paragraph.
+- Reproducibility fix: h5_jepa_augmentations.py seeded its paired bootstrap with abs(hash(name)), which Python salts per process, so the H5 confidence intervals changed on every run (the committed-era values could not be reproduced). seed_for now uses zlib.crc32; two consecutive runs give byte-identical JSON. H1-H4 were already deterministic and reproduced exactly.
+- Numerical corrections from the deterministic H5 rerun (paper and docs/HYPOTHESIS_RESULTS.md): +intervention CI [-0.127, +0.125] -> [-0.128, +0.123]; +bisim [-0.231, -0.027] -> [-0.232, -0.027]; +active masking [-0.059, +0.048] -> [-0.061, +0.048]; +viability [-0.007, +0.098] -> [-0.007, +0.097] (abstract +0.10 unchanged); +all [-0.209, -0.023] -> [-0.209, -0.021]. Means and verdicts unchanged.
+- claims.yaml: 70 claims (57 computation, 5 interpretation, 4 source, 2 assumption, 1 definition, 1 normative), bound to simulation/output/experiments/h1-h5 JSON (gitignored artifacts; hashes recorded in the receipt).
+- Source claims checked against abstracts: Hansen and Ghrist, Ames et al., Ferns et al. (Crossref/OpenAlex); de Haan et al., Assran et al., Bardes et al. (arXiv API). Unverified, not bound: Littman and Sutton predictive-state criterion, Pearl interventional semantics, Zhang et al. curriculum sensitivity of bisimulation, Robinson (standard attributions, not checked against text).
+- Execution receipt: run id hypotheses (verification/hypotheses.json), all five experiments run through their main() functions in one uv process; experiment verdicts (H2, H4, H5 FAIL as preregistered) are scientific results and do not fail the execution.
+- Not changed: docs/JEPA_AUGMENTATIONS.md carries older preliminary toy numbers (e.g. bisim -0.11, CI [-0.23, +0.01]) not produced by the current experiments; left for a separate docs pass.
+
 ## 2026-09-23 — prose revision
 
 Prose rewritten against the house standards. Headings: Abstract; 1 Introduction (was Reframing); 2 Intervention-Sufficient Representations; 3 Augmentations as Loss Terms; 4 NumPy JEPA Toy on Dishworld; 5 Preregistered Hypothesis Tests (H1 Obstruction Gate; H2 Active Versus Entropy Probing; H3 Trained Encoder Versus Frozen Random Projection; H4 Cellular Sheaf Versus Scalar Cover; H5 JEPA Augmentations on the Toy); 6 Conjectured Typology and Priority Order; 7 Limitations (absorbs "What this paper is not"); 8 Conclusion; 9 Reproducibility.

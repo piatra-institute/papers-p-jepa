@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import json
 import sys
+import zlib
 from typing import Any
 
 import numpy as np
@@ -209,7 +210,9 @@ def run() -> dict[str, Any]:
 
 
 def seed_for(name: str) -> int:
-    return abs(hash(name)) % 2**30
+    # Stable across processes: the built-in str hash is salted per interpreter
+    # (PYTHONHASHSEED), which made the bootstrap CIs differ from run to run.
+    return zlib.crc32(name.encode("utf-8")) % 2**30
 
 
 def main() -> int:

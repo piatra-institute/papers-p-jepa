@@ -1,5 +1,5 @@
 {
-  "pdf_sha256": "71e42d4f2409a7c8fa75ac66c35ac6f0c61fa363f5b2f12fa41c81a84323d364",
+  "pdf_sha256": "a0a7d97fd084ee291891bfbc7322f699e74238c1f0125508dd08c5471427e2fe",
   "page_count": 10,
   "pages_inspected": [
     1,
@@ -14,5 +14,5 @@
     10
   ],
   "all_pages_inspected": true,
-  "notes": "All 10 pages inspected after the prose revision; the augmentation table's loss column overflowed into the next column and was widened; tables, equations, code block and references render cleanly. Metadata-only rebuild: the web blurb in metadata.yaml, a hashed build input, changed, so the PDF was re-rendered (2cf01165504d to 71e42d4f2409); the rendered text is byte-for-byte identical and no page was re-inspected."
+  "notes": "All 10 pages inspected after the prose revision; the augmentation table's loss column overflowed into the next column and was widened; tables, equations, code block and references render cleanly. Metadata-only rebuild: the web blurb in metadata.yaml, a hashed build input, changed, so the PDF was re-rendered (2cf01165504d to 71e42d4f2409); the rendered text is byte-for-byte identical and no page was re-inspected. Metadata-only rebuild: the web blurb in metadata.yaml, a hashed build input, changed, so the PDF was re-rendered (71e42d4f2409 to a0a7d97fd084); the rendered text is byte-for-byte identical and no page was re-inspected."
 }
